@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../home/home_controller.dart';
 
-class DyeingFinishingHome extends StatelessWidget {
-  const DyeingFinishingHome({super.key});
+class VerifyDocumentHomeScreen extends StatelessWidget {
+  const VerifyDocumentHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

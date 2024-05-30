@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../app_widgets/confirmation_alert.dart';
@@ -189,24 +191,26 @@ class RowingInspectionDashboard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 10.0),
-              Row(
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: ()  =>  Get.toNamed(AppRoutes.rowingQualityCheckCardOperation),
-                      child: const ComplaintPortalCard(
-                        icon: Icon(
-                          Icons.line_axis_outlined,
-                          color: Colors.deepOrangeAccent,
+              if (Platform.isAndroid)
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: ()  =>  Get.toNamed(AppRoutes.rowingQualityCheckCardOperation),
+                        child: const ComplaintPortalCard(
+                          icon: Icon(
+                            Icons.line_axis_outlined,
+                            color: Colors.deepOrangeAccent,
+                          ),
+                          color: Color(0xFF6C63FF),
+                          titleText: '',
+                          subTitleText: "Check Card Operation For EndLine",
                         ),
-                        color: Color(0xFF6C63FF),
-                        titleText: '',
-                        subTitleText: "Check Card Operation For EndLine",
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+
             ],
           );
         },

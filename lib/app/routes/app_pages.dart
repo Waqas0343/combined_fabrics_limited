@@ -63,7 +63,8 @@ import '../screens/rowing_inspection/rowing_quality_dashboard.dart';
 import '../screens/rowing_inspection/rowing_quality_in_line_scan_nfc.dart';
 import '../screens/rowing_inspection/rowing_quality_scan_rfid_for_end_line.dart';
 import '../screens/splash/splash_screen.dart';
-import '../screens/verify_documents/p_o_approve_screen.dart';
+import '../screens/verify_documents/document_approval_screen.dart';
+import '../screens/verify_documents/stock_adjustment_screen.dart';
 import '../screens/verify_documents/verify_documents_DashBoard.dart';
 import 'app_routes.dart';
 
@@ -198,10 +199,6 @@ class AppPages {
       page: () => const FirstAidBoxIssuance(),
     ),
     GetPage(
-      name: AppRoutes.verifyDocumentDashBoard,
-      page: () => const DyeingFinishingHome(),
-    ),
-    GetPage(
       name: AppRoutes.rowingInspectionDashboard,
       page: () => const RowingInspectionDashboard(),
     ),
@@ -330,8 +327,16 @@ class AppPages {
       page: () => const CheckWorkerOperationAgainstCard(),
     ),
     GetPage(
-      name: AppRoutes.verifyDocumentPOApproveScreen,
-      page: () => const POApproveHomeScreen(),
+      name: AppRoutes.verifyDocumentDashBoard,
+      page: () => const VerifyDocumentHomeScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.stockAdjustmentScreen,
+      page: () => const StockAdjustmentHomeScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.documentApprovalScreen,
+      page: () => const DocumentApprovalScreen(),
     ),
   ];
 }

@@ -1,20 +1,33 @@
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
-class POApproveHomeController  extends GetxController{
-  final List<Map<String, String>> dummyData = List.generate(10, (index) {
-    final now = DateTime.now().subtract(Duration(days: index));
-    return {
-      'image': 'assets/icons/verify.svg',
-      'title': 'Item ${index + 1}',
-      'subtitle': 'This is the subtitle for item ${index + 1}',
-      'date': DateFormat('yyyy-MM-dd').format(now),
-      'time': DateFormat('HH:mm').format(now),
-    };
-  });
+import '../../../../app_assets/styles/strings/app_constants.dart';
+import '../../../debug/debug_pointer.dart';
+import '../../../server/api_fetch.dart';
+import '../../../services/preferences.dart';
+import '../verify_models/verify_doc_dashboard_model.dart';
+
+class POApproveHomeController extends GetxController {
+  final RxList<DocumentVerifyAppListModel> dashboardAppList =
+      RxList<DocumentVerifyAppListModel>();
+  final RxBool isLoading = RxBool(true);
+  String employeeName = Get.find<Preferences>().getString(Keys.userId) ?? "";
+
   @override
   void onInit() {
     // TODO: implement onInit
+    Debug.log("employeeName $employeeName");
+    getDashboardAppList(employeeName);
     super.onInit();
+  }
+
+  Future<void> getDashboardAppList(String userId) async {
+    String param = "userId=$userId";
+    isLoading(true);
+    List<DocumentVerifyAppListModel>? responseList =
+        await ApiFetch.getVerifyDashboardAppList(param);
+    isLoading(false);
+    if (responseList != null) {
+      dashboardAppList.assignAll(responseList);
+    }
   }
 }

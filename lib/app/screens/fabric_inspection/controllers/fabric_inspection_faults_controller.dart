@@ -45,18 +45,19 @@ class FabricInspectionFaultsController extends GetxController {
   }
 
   Future<void> getFaults() async {
-    String params =
-        "RollNo=${rollsModel.value?.rollNo}&RollCat=${rollsModel.value?.rollCat}&RpStatus=${rollsModel.value?.rpStatus ?? ''}&RpStatus=$rpStatus";
+    String params = "RollNo=${rollsModel.value?.rollNo}&RollCat=${rollsModel.value?.rollCat}&RpStatus=${rollsModel.value?.rpStatus ?? ''}&RpStatus=$rpStatus";
     isLoading.value = true;
     FaultsModel? faultsResponse = await ApiFetch.getFaults(params);
     isLoading.value = false;
     if (faultsResponse != null) {
+      // Sort the list by FaultName in ascending order
+      faultsResponse.list.sort((a, b) => a.faultName.compareTo(b.faultName));
       faultsList.assignAll(faultsResponse.list);
       expireDate = faultsResponse.expiredate;
-      Get.find<Preferences>()
-          .setString(Keys.rollTime, expireDate?.toIso8601String());
+      Get.find<Preferences>().setString(Keys.rollTime, expireDate?.toIso8601String());
     }
   }
+
 
   Future<bool> saveFaults() async {
     if (rollsModel.value == null) {

@@ -1,0 +1,176 @@
+import 'package:combined_fabrics_limited/app/screens/verify_documents/verify_controllers/document_approval_controller.dart';
+import 'package:combined_fabrics_limited/app/screens/verify_documents/verify_models/next_levels_users.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+class DocumentApprovalScreen extends StatelessWidget {
+  const DocumentApprovalScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final DocumentApprovalController controller =
+        Get.put(DocumentApprovalController());
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Stock Adjustment',
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: Row(
+              children: [
+                const Text(
+                  'Assigned by ',
+                  style: TextStyle(color: Colors.white),
+                ),
+                Text(
+                  controller.pendingDocumentsListModel.lastuser,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+      body: Obx(() => Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Document Name: ${controller.pendingDocumentsListModel.docnum}',
+                  style: Get.textTheme.titleSmall
+                      ?.copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  controller.dateFormat
+                      .format(controller.pendingDocumentsListModel.createdDate),
+                  style: Get.textTheme.titleSmall?.copyWith(fontSize: 16),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Status",
+                            style: Get.textTheme.titleSmall
+                                ?.copyWith(fontSize: 16),
+                          ),
+                          DropdownButton<String>(
+                            hint: Text(
+                              "Select Status",
+                              style: Get.textTheme.titleSmall,
+                            ),
+                            value: controller.status.value,
+                            isExpanded: true,
+                            items:
+                                controller.statusOptions.map((String status) {
+                              return DropdownMenuItem<String>(
+                                value: status,
+                                child: Text(status),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              controller.changeStatus(newValue);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Assign New User",
+                            style: Get.textTheme.titleSmall
+                                ?.copyWith(fontSize: 16),
+                          ),
+                          const SizedBox(height: 8),
+                          DropdownButton<NextLevelUsersListModel>(
+                            hint: Text(
+                              "Select User",
+                              style: Get.textTheme.titleSmall,
+                            ),
+                            value: controller.selectedUser.value,
+                            isExpanded: true,
+                            items: controller.status.value == 'approved'
+                                ? controller.approvedUsers
+                                    .map((NextLevelUsersListModel user) {
+                                    return DropdownMenuItem<
+                                        NextLevelUsersListModel>(
+                                      value: user,
+                                      child: Text(user.username),
+                                    );
+                                  }).toList()
+                                : controller.rejectedUsers
+                                    .map((NextLevelUsersListModel user) {
+                                    return DropdownMenuItem<
+                                        NextLevelUsersListModel>(
+                                      value: user,
+                                      child: Text(user.username),
+                                    );
+                                  }).toList(),
+                            onChanged: (NextLevelUsersListModel? newValue) {
+                              controller.assignUser(newValue);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                    ),
+                    child: const Center(
+                      child: Placeholder(),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  decoration: const InputDecoration(
+                    labelText: 'Comments',
+                    border: OutlineInputBorder(),
+                  ),
+                  style: Get.textTheme.titleSmall,
+                  onChanged: controller.updateComments,
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        controller.submit();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                      ),
+                      child: Text(
+                        'Submit',
+                        style: Get.textTheme.titleSmall
+                            ?.copyWith(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          )),
+    );
+  }
+}

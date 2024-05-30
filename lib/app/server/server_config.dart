@@ -145,5 +145,14 @@ class ServerConfig {
   static const rowingQualityFaultFrequencyWithoutOperation= "${baseUrl}Rowing/GetFaultFaultsFrequncy?";
   static const rowingQualityRFIDCardInformation = "${baseUrl}Rowing/GetRFIDCardBundelid_AndOpertaionTracting?";
 
+  // Verify Documents
+
+  static const getVerifyDocumentsAppsList = "${baseUrl}DocApprovel/GetAppsList?";
+  static const getVerifyGetCountDocsList = "${baseUrl}DocApprovel/GetCountDocs?";
+  static const getVerifyGetPendingDocsList = "${baseUrl}DocApprovel/GetPendingDocs?";
+  static const getVerifyNextLevelUsersList = "${baseUrl}DocApprovel/GetNextLevelUsers?";
+  static const getVerifyBelowLevelUsersList = "${baseUrl}DocApprovel/GetBelowLevelsUsers?";
+  static const getVerifyUpdateAppLevel = "${baseUrl}DocApprovel/UpdateAppLevel";
+
 
 }

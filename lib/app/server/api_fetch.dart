@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:combined_fabrics_limited/app/screens/verify_documents/verify_models/update_app_level.dart';
 import 'package:combined_fabrics_limited/app/server/server_config.dart';
 import 'package:combined_fabrics_limited/helpers/toaster.dart';
 import 'package:dio/dio.dart';
@@ -83,6 +84,9 @@ import '../screens/rowing_inspection/rowing_quality_in_line_reports/rowing_quali
 import '../screens/rowing_inspection/rowing_quality_in_line_reports/rowing_quality_check_stitching_production/rowing_quality_check_stitching_producntion_models/rowing_quality_check_operator_production_report_model.dart';
 import '../screens/rowing_inspection/rowing_quality_in_line_reports/rowing_quality_check_stitching_production/rowing_quality_check_stitching_producntion_models/rowing_quality_work_order_summary_report_model.dart';
 import '../screens/splash/mobile_app_version_model.dart';
+import '../screens/verify_documents/verify_models/next_levels_users.dart';
+import '../screens/verify_documents/verify_models/pending_documents_model.dart';
+import '../screens/verify_documents/verify_models/verify_doc_dashboard_model.dart';
 import '../services/preferences.dart';
 
 class ApiFetch extends getx.GetxService {
@@ -2925,7 +2929,8 @@ class ApiFetch extends getx.GetxService {
     }
   }
 
-  static Future<List<RowingQualityMachineDashboardListModel>?> getRowingQualityDashBoardMachine(String value) async {
+  static Future<List<RowingQualityMachineDashboardListModel>?>
+      getRowingQualityDashBoardMachine(String value) async {
     Response response;
     List<RowingQualityMachineDashboardListModel>? machineFlagList;
     try {
@@ -4050,7 +4055,8 @@ class ApiFetch extends getx.GetxService {
     }
   }
 
-  static Future<List<ChangeFlagReasonListModel>?> getRowingQualityChangeFlgReason() async {
+  static Future<List<ChangeFlagReasonListModel>?>
+      getRowingQualityChangeFlgReason() async {
     Response response;
     List<ChangeFlagReasonListModel>? reasonList;
     try {
@@ -4092,13 +4098,15 @@ class ApiFetch extends getx.GetxService {
     return reasonList;
   }
 
-
-  static Future<List<WorkOrderProductionStitchingListModel>?> getRowingQualityWorkOrderProductionStitchingReport(date) async {
+  static Future<List<WorkOrderProductionStitchingListModel>?>
+      getRowingQualityWorkOrderProductionStitchingReport(date) async {
     Response response;
     List<WorkOrderProductionStitchingListModel>? reasonList;
     try {
-      Debug.log(ServerConfig.rowingQualityWorkOrderProductionStitchingReport + date);
-      String url = ServerConfig.rowingQualityWorkOrderProductionStitchingReport + date;
+      Debug.log(
+          ServerConfig.rowingQualityWorkOrderProductionStitchingReport + date);
+      String url =
+          ServerConfig.rowingQualityWorkOrderProductionStitchingReport + date;
       String token = Get.find<Preferences>().getString(Keys.token) ?? "";
 
       final headers = {
@@ -4120,7 +4128,8 @@ class ApiFetch extends getx.GetxService {
     if (response.statusCode == 200) {
       Debug.log(response.data.toString());
       try {
-        final keysResponse = WorkOrderProductionStitchingModel.fromJson(response.data);
+        final keysResponse =
+            WorkOrderProductionStitchingModel.fromJson(response.data);
         Get.snackbar(
           "Message",
           keysResponse.message,
@@ -4135,7 +4144,8 @@ class ApiFetch extends getx.GetxService {
     return reasonList;
   }
 
-  static Future<List<RowingQualityCheckOperatorProductionReportListModel>?> getRowingQualityOperatorProductionReport(date) async {
+  static Future<List<RowingQualityCheckOperatorProductionReportListModel>?>
+      getRowingQualityOperatorProductionReport(date) async {
     Response response;
     List<RowingQualityCheckOperatorProductionReportListModel>? reasonList;
     try {
@@ -4162,7 +4172,9 @@ class ApiFetch extends getx.GetxService {
     if (response.statusCode == 200) {
       Debug.log(response.data.toString());
       try {
-        final keysResponse = RowingQualityCheckOperatorProductionReportModel.fromJson(response.data);
+        final keysResponse =
+            RowingQualityCheckOperatorProductionReportModel.fromJson(
+                response.data);
         Get.snackbar(
           "Message",
           keysResponse.message,
@@ -4177,7 +4189,8 @@ class ApiFetch extends getx.GetxService {
     return reasonList;
   }
 
-  static Future<List<RowingQualityTopOperationListModel>?> getRowingQualityTopOperatorReport(date) async {
+  static Future<List<RowingQualityTopOperationListModel>?>
+      getRowingQualityTopOperatorReport(date) async {
     Response response;
     List<RowingQualityTopOperationListModel>? reasonList;
     try {
@@ -4204,7 +4217,8 @@ class ApiFetch extends getx.GetxService {
     if (response.statusCode == 200) {
       Debug.log(response.data.toString());
       try {
-        final keysResponse = RowingQualityTopOperationModel.fromJson(response.data);
+        final keysResponse =
+            RowingQualityTopOperationModel.fromJson(response.data);
         Get.snackbar(
           "Message",
           keysResponse.message,
@@ -4219,13 +4233,15 @@ class ApiFetch extends getx.GetxService {
     return reasonList;
   }
 
-
-  static Future<List<RowingQualityTopFaultWithoutOperationListModel>?> getRowingQualityTopFaultWithOutOperation(date) async {
+  static Future<List<RowingQualityTopFaultWithoutOperationListModel>?>
+      getRowingQualityTopFaultWithOutOperation(date) async {
     Response response;
     List<RowingQualityTopFaultWithoutOperationListModel>? reasonList;
     try {
-      Debug.log(ServerConfig.rowingQualityFaultFrequencyWithoutOperation + date);
-      String url = ServerConfig.rowingQualityFaultFrequencyWithoutOperation + date;
+      Debug.log(
+          ServerConfig.rowingQualityFaultFrequencyWithoutOperation + date);
+      String url =
+          ServerConfig.rowingQualityFaultFrequencyWithoutOperation + date;
       String token = Get.find<Preferences>().getString(Keys.token) ?? "";
 
       final headers = {
@@ -4247,7 +4263,8 @@ class ApiFetch extends getx.GetxService {
     if (response.statusCode == 200) {
       Debug.log(response.data.toString());
       try {
-        final keysResponse = RowingQualityTopFaultWithoutOperationModel.fromJson(response.data);
+        final keysResponse =
+            RowingQualityTopFaultWithoutOperationModel.fromJson(response.data);
         Get.snackbar(
           "Message",
           keysResponse.message,
@@ -4262,8 +4279,8 @@ class ApiFetch extends getx.GetxService {
     return reasonList;
   }
 
-
-  static Future<List<CardScanListModel>?> getRowingQualityCardInformation(date) async {
+  static Future<List<CardScanListModel>?> getRowingQualityCardInformation(
+      date) async {
     Response response;
     List<CardScanListModel>? cardList;
     try {
@@ -4305,4 +4322,201 @@ class ApiFetch extends getx.GetxService {
     return cardList;
   }
 
+  static Future<List<DocumentVerifyAppListModel>?> getVerifyDashboardAppList(
+      date) async {
+    Response response;
+    List<DocumentVerifyAppListModel>? documentVerifyAppList;
+    try {
+      Debug.log(ServerConfig.getVerifyDocumentsAppsList + date);
+      String url = ServerConfig.getVerifyDocumentsAppsList + date;
+      String token = Get.find<Preferences>().getString(Keys.token) ?? "";
+
+      final headers = {
+        "Authorization": "Bearer $token",
+      };
+
+      response = await dio.get(
+        url,
+        options: Options(
+          headers: headers,
+        ),
+      );
+    } catch (e, s) {
+      Debug.log(e);
+      Debug.log(s);
+      return documentVerifyAppList;
+    }
+
+    if (response.statusCode == 200) {
+      Debug.log(response.data.toString());
+      try {
+        // String params ="$date&appId=${response.data["appId"]}";
+        // Debug.log(params);
+        final keysResponse = DocumentVerifyAppModel.fromJson(response.data);
+        Get.snackbar(
+          "Message",
+          keysResponse.message,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        documentVerifyAppList = keysResponse.lists;
+      } catch (e, s) {
+        Debug.log(e);
+        Debug.log(s);
+      }
+    }
+    return documentVerifyAppList;
+  }
+
+  static Future<List<PendingDocumentsListModel>?> getPendingDocsList(
+      date) async {
+    Response response;
+    List<PendingDocumentsListModel>? documentVerifyAppList;
+    try {
+      Debug.log(ServerConfig.getVerifyGetPendingDocsList + date);
+      String url = ServerConfig.getVerifyGetPendingDocsList + date;
+      String token = Get.find<Preferences>().getString(Keys.token) ?? "";
+
+      final headers = {
+        "Authorization": "Bearer $token",
+      };
+
+      response = await dio.get(
+        url,
+        options: Options(
+          headers: headers,
+        ),
+      );
+    } catch (e, s) {
+      Debug.log(e);
+      Debug.log(s);
+      return documentVerifyAppList;
+    }
+
+    if (response.statusCode == 200) {
+      Debug.log(response.data.toString());
+      try {
+        final keysResponse = PendingDocumentsModel.fromJson(response.data);
+        Get.snackbar(
+          "Message",
+          keysResponse.message,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        documentVerifyAppList = keysResponse.lists;
+      } catch (e, s) {
+        Debug.log(e);
+        Debug.log(s);
+      }
+    }
+    return documentVerifyAppList;
+  }
+
+  static Future<List<NextLevelUsersListModel>?> getNextLevelUsers(date) async {
+    Response response;
+    List<NextLevelUsersListModel>? modelList;
+    try {
+      Debug.log(ServerConfig.getVerifyNextLevelUsersList + date);
+      String url = ServerConfig.getVerifyNextLevelUsersList + date;
+      String token = Get.find<Preferences>().getString(Keys.token) ?? "";
+
+      final headers = {
+        "Authorization": "Bearer $token",
+      };
+
+      response = await dio.get(
+        url,
+        options: Options(
+          headers: headers,
+        ),
+      );
+    } catch (e, s) {
+      Debug.log(e);
+      Debug.log(s);
+      return modelList;
+    }
+
+    if (response.statusCode == 200) {
+      Debug.log(response.data.toString());
+      try {
+        final keysResponse = NextLevelUsersModel.fromJson(response.data);
+        Get.snackbar(
+          "Message",
+          keysResponse.message,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        modelList = keysResponse.lists;
+      } catch (e, s) {
+        Debug.log(e);
+        Debug.log(s);
+      }
+    }
+    return modelList;
+  }
+
+  static Future<List<NextLevelUsersListModel>?> getBelowLevelUsers(date) async {
+    Response response;
+    List<NextLevelUsersListModel>? modelList;
+    try {
+      Debug.log(ServerConfig.getVerifyBelowLevelUsersList + date);
+      String url = ServerConfig.getVerifyBelowLevelUsersList + date;
+      String token = Get.find<Preferences>().getString(Keys.token) ?? "";
+
+      final headers = {
+        "Authorization": "Bearer $token",
+      };
+
+      response = await dio.get(
+        url,
+        options: Options(
+          headers: headers,
+        ),
+      );
+    } catch (e, s) {
+      Debug.log(e);
+      Debug.log(s);
+      return modelList;
+    }
+
+    if (response.statusCode == 200) {
+      Debug.log(response.data.toString());
+      try {
+        final keysResponse = NextLevelUsersModel.fromJson(response.data);
+        Get.snackbar(
+          "Message",
+          keysResponse.message,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        modelList = keysResponse.lists;
+      } catch (e, s) {
+        Debug.log(e);
+        Debug.log(s);
+      }
+    }
+    return modelList;
+  }
+
+  static Future<void> updateAppLevel(UpdateAppLevelModel updateAppLevel) async {
+    Response response;
+    try {
+      Debug.log(ServerConfig.getVerifyUpdateAppLevel);
+      String url = ServerConfig.getVerifyUpdateAppLevel;
+      String token = Get.find<Preferences>().getString(Keys.token) ?? "";
+
+      final headers = {
+        "Authorization": "Bearer $token",
+      };
+
+      response = await dio.post(
+        url,
+        data: updateAppLevel,
+        options: Options(
+          headers: headers,
+        ),
+      );
+      if (response.statusCode == 200) {}
+    } catch (e, s) {
+      Debug.log(e);
+      Debug.log(s);
+      // return modelList;
+    }
+  }
 }

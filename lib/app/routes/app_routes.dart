@@ -70,5 +70,6 @@ class AppRoutes {
 
 
   /// TODO: Document Verify Routes
-  static const String verifyDocumentPOApproveScreen = "/p_o_approve_screen";
+  static const String stockAdjustmentScreen = "/stock_adjustment_screen";
+  static const String documentApprovalScreen = "/document_approval_screen";
 }
