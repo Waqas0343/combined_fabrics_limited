@@ -156,10 +156,10 @@ class DocumentApprovalController extends GetxController {
   Future<void> fetchPdfUrl(int appId, int docId) async {
     // String param = "appId=$appId&documentsId=$employeeName";
     String param = "appId=8&documentsId=24050026";
-    pdfUrl.value = (await ApiFetch.fetchPdfUrl(param)) ?? '';
-    // fromAsset('assets/188.pdf', '188.pdf').then((f) {
-    //   pdfUrl.value = f.path;
-    // });
+    // pdfUrl.value = (await ApiFetch.fetchPdfUrl(param)) ?? '';
+    fromAsset('assets/188.pdf', '188.pdf').then((f) {
+      pdfUrl.value = f.path;
+    });
   }
 
   Future<File> fromAsset(String asset, String filename) async {
