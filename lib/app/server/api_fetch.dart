@@ -4480,11 +4480,14 @@ class ApiFetch extends getx.GetxService {
       Debug.log(response.data.toString());
       try {
         final keysResponse = NextLevelUsersModel.fromJson(response.data);
-        Get.snackbar(
-          "Message",
-          keysResponse.message,
-          snackPosition: SnackPosition.BOTTOM,
-        );
+        if (keysResponse.lists.isNotEmpty) {
+          Get.snackbar(
+            "Message",
+            keysResponse.message,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        }
+
         modelList = keysResponse.lists;
       } catch (e, s) {
         Debug.log(e);
@@ -4507,7 +4510,7 @@ class ApiFetch extends getx.GetxService {
 
       response = await dio.post(
         url,
-        data: updateAppLevel,
+        data: updateAppLevel.toJson(),
         options: Options(
           headers: headers,
         ),
@@ -4518,5 +4521,40 @@ class ApiFetch extends getx.GetxService {
       Debug.log(s);
       // return modelList;
     }
+  }
+
+  static Future<String?> fetchPdfUrl(date) async {
+    Response response;
+    String? pdfUrl;
+    try {
+      Debug.log(ServerConfig.getVerifyGetFile + date);
+      String url = ServerConfig.getVerifyGetFile + date;
+      String token = Get.find<Preferences>().getString(Keys.token) ?? "";
+
+      final headers = {
+        "Authorization": "Bearer $token",
+      };
+
+      response = await dio.get(
+        url,
+        options: Options(
+          headers: headers,
+        ),
+      );
+    } catch (e, s) {
+      Debug.log(e);
+      Debug.log(s);
+      return pdfUrl;
+    }
+
+    if (response.statusCode == 200) {
+      try {
+        pdfUrl = response.data['pdfUrl'];
+      } catch (e, s) {
+        Debug.log(e);
+        Debug.log(s);
+      }
+    }
+    return pdfUrl;
   }
 }

@@ -1,6 +1,6 @@
 class UpdateAppLevelModel {
   int appLogId;
-  int userId;
+  String userId;
   int status;
   String comments;
   int rejectLevel;

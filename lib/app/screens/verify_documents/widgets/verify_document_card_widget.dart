@@ -36,19 +36,20 @@ class DocumentsAppCard extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final item = controller.dashboardAppList[index];
                     Debug.log(item.appname);
-                    var icon = "assets/icons/store.svg";
+                    var icon = "assets/icons/verify.svg";
                     if (item.appname == "Stock Adjustment") {
                       icon = "assets/icons/store.svg";
-                    } else if (item.appname == "Over Time") {
+                    } else if (item.appname == " Over Time") {
                       icon = "assets/icons/overtime.svg";
+                    } else if (item.appname == "PO Close") {
+                      icon = "assets/icons/close.svg";
                     }
                     return ToolsWidget(
                       icon: icon,
                       cnt: item.documentCount,
                       title: item.appname,
                       onTap: () {
-                        Get.toNamed(AppRoutes.stockAdjustmentScreen,
-                            arguments: {'AppID': item.appid});
+                       controller.nextScreen(item);
                       },
                     );
                   },
