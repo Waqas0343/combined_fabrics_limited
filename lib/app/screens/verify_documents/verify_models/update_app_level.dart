@@ -1,6 +1,7 @@
 class UpdateAppLevelModel {
   int appLogId;
   String userId;
+  String selectedUser;
   int status;
   String comments;
   int rejectLevel;
@@ -12,6 +13,7 @@ class UpdateAppLevelModel {
   UpdateAppLevelModel({
     required this.appLogId,
     required this.userId,
+    required this.selectedUser,
     required this.status,
     required this.comments,
     required this.rejectLevel,
@@ -21,27 +23,30 @@ class UpdateAppLevelModel {
     required this.ipAddress,
   });
 
-  factory UpdateAppLevelModel.fromJson(Map<String, dynamic> json) => UpdateAppLevelModel(
-    appLogId: json["AppLogID"],
-    userId: json["UserID"],
-    status: json["Status"],
-    comments: json["Comments"],
-    rejectLevel: json["RejectLevel"],
-    domainUser: json["DomainUser"],
-    loginUser: json["LoginUser"],
-    computerName: json["ComputerName"],
-    ipAddress: json["IpAddress"],
-  );
+  factory UpdateAppLevelModel.fromJson(Map<String, dynamic> json) =>
+      UpdateAppLevelModel(
+        appLogId: json["AppLogID"],
+        userId: json["UserID"],
+        selectedUser: json["SelectedUser"],
+        status: json["Status"],
+        comments: json["Comments"],
+        rejectLevel: json["RejectLevel"],
+        domainUser: json["DomainUser"],
+        loginUser: json["LoginUser"],
+        computerName: json["ComputerName"],
+        ipAddress: json["IpAddress"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "AppLogID": appLogId,
-    "UserID": userId,
-    "Status": status,
-    "Comments": comments,
-    "RejectLevel": rejectLevel,
-    "DomainUser": domainUser,
-    "LoginUser": loginUser,
-    "ComputerName": computerName,
-    "IpAddress": ipAddress,
-  };
+        "AppLogID": appLogId,
+        "UserID": userId,
+        "SelectedUser": selectedUser,
+        "Status": status,
+        "Comments": comments,
+        "RejectLevel": rejectLevel,
+        "DomainUser": domainUser,
+        "LoginUser": loginUser,
+        "ComputerName": computerName,
+        "IpAddress": ipAddress,
+      };
 }

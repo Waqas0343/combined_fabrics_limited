@@ -1,3 +1,4 @@
+import 'package:combined_fabrics_limited/app/debug/debug_pointer.dart';
 import 'package:combined_fabrics_limited/app/screens/verify_documents/verify_controllers/document_approval_controller.dart';
 import 'package:combined_fabrics_limited/app/screens/verify_documents/verify_models/next_levels_users.dart';
 import 'package:flutter/material.dart';
@@ -187,15 +188,15 @@ class DocumentApprovalScreen extends StatelessWidget {
                               fitPolicy: FitPolicy.WIDTH,
                               autoSpacing: false,
                               pageFling: true,
-                              onRender: (_pages) {
-                                controller.pages.value = _pages!;
+                              onRender: (pages) {
+                                controller.pages.value = pages!;
                                 controller.isReady.value = true;
                               },
                               onError: (error) {
-                                print(error.toString());
+                                Debug.log(error.toString());
                               },
                               onPageError: (page, error) {
-                                print('$page: ${error.toString()}');
+                                Debug.log('$page: ${error.toString()}');
                               },
                               onViewCreated:
                                   (PDFViewController pdfViewController) {
@@ -204,7 +205,7 @@ class DocumentApprovalScreen extends StatelessWidget {
                               },
                             )
                           : const Center(
-                              child: Text("No PDF available"),
+                              child: CircularProgressIndicator(),
                             ),
                     ),
                   ),

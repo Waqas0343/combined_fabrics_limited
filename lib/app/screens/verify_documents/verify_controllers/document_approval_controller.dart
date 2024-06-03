@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:combined_fabrics_limited/app/debug/debug_pointer.dart';
+import 'package:combined_fabrics_limited/app/server/server_config.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -114,7 +117,8 @@ class DocumentApprovalController extends GetxController {
       if (isUserIdRequired && selectedUser.value != null) {
         updateAppLevelModel = UpdateAppLevelModel(
             appLogId: pendingDocumentsListModel.applogid,
-            userId: selectedUser.value!.userid,
+            userId: employeeName,
+            selectedUser: selectedUser.value!.userid,
             status: status.value == 'approved' ? 1 : 0,
             comments: comments.value,
             rejectLevel: 4,
@@ -125,7 +129,8 @@ class DocumentApprovalController extends GetxController {
       } else if (!isUserIdRequired) {
         updateAppLevelModel = UpdateAppLevelModel(
             appLogId: pendingDocumentsListModel.applogid,
-            userId: '',
+            userId: employeeName,
+            selectedUser: '',
             status: status.value == 'approved' ? 1 : 0,
             comments: comments.value,
             rejectLevel: 4,
@@ -135,18 +140,16 @@ class DocumentApprovalController extends GetxController {
             ipAddress: '');
       }
 
-      if (updateAppLevelModel != null) {
-        isLoading(true);
-        // await ApiFetch.updateAppLevel(updateAppLevelModel);
-        isLoading(false);
-        Get.snackbar('Success', 'Document updated successfully.',
-            snackPosition: SnackPosition.BOTTOM);
-        Get.close(2);
-      } else {
-        Get.snackbar('Error', 'User selection is required.',
-            snackPosition: SnackPosition.BOTTOM);
-      }
-    } catch (e) {
+      Debug.log("................${updateAppLevelModel!.appLogId}");
+      Debug.log("json................${updateAppLevelModel.toJson()}");
+
+      isLoading(true);
+      await ApiFetch.updateAppLevel(updateAppLevelModel);
+      isLoading(false);
+      Get.snackbar('Success', 'Document updated successfully.',
+          snackPosition: SnackPosition.BOTTOM);
+      Get.close(3);
+        } catch (e) {
       isLoading(false);
       Get.snackbar('Error', 'Something went wrong try again $e',
           snackPosition: SnackPosition.BOTTOM);
@@ -154,12 +157,10 @@ class DocumentApprovalController extends GetxController {
   }
 
   Future<void> fetchPdfUrl(int appId, int docId) async {
-    // String param = "appId=$appId&documentsId=$employeeName";
-    String param = "appId=8&documentsId=24050026";
-    // pdfUrl.value = (await ApiFetch.fetchPdfUrl(param)) ?? '';
-    fromAsset('assets/188.pdf', '188.pdf').then((f) {
-      pdfUrl.value = f.path;
-    });
+    String param = "appId=$appId&documentsId=$docId";
+    Debug.log("...............${pdfUrl.value}");
+    var file = await createFileOfPdfUrl(ServerConfig.getVerifyGetFile + param);
+    pdfUrl.value = file.path;
   }
 
   Future<File> fromAsset(String asset, String filename) async {
@@ -170,6 +171,26 @@ class DocumentApprovalController extends GetxController {
       File file = File("${dir.path}/$filename");
       var data = await rootBundle.load(asset);
       var bytes = data.buffer.asUint8List();
+      await file.writeAsBytes(bytes, flush: true);
+      completer.complete(file);
+    } catch (e) {
+      throw Exception('Error parsing asset file!');
+    }
+
+    return completer.future;
+  }
+
+  Future<File> createFileOfPdfUrl(String filePath) async {
+    Completer<File> completer = Completer();
+    try {
+      final url = filePath;
+      final filename = url.substring(url.lastIndexOf("/") + 1);
+      var request = await HttpClient().getUrl(Uri.parse(url));
+      var response = await request.close();
+      var bytes = await consolidateHttpClientResponseBytes(response);
+      var dir = await getApplicationDocumentsDirectory();
+      File file = File("${dir.path}/$filename");
+
       await file.writeAsBytes(bytes, flush: true);
       completer.complete(file);
     } catch (e) {
