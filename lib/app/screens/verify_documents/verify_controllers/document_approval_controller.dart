@@ -145,15 +145,25 @@ class DocumentApprovalController extends GetxController {
 
       isLoading(true);
       await ApiFetch.updateAppLevel(updateAppLevelModel);
+      await updatePreferences();
       isLoading(false);
       Get.snackbar('Success', 'Document updated successfully.',
           snackPosition: SnackPosition.BOTTOM);
       Get.close(3);
-        } catch (e) {
+    } catch (e) {
       isLoading(false);
       Get.snackbar('Error', 'Something went wrong try again $e',
           snackPosition: SnackPosition.BOTTOM);
     }
+  }
+
+  Future<void> updatePreferences() async {
+    // String appKey =
+    //     'user_${employeeName}_lastCount_${pendingDocumentsListModel.appid}';
+    // var pref = Get.find<Preferences>();
+    // int lastCount = pref.getInt(appKey) ?? 0;
+    //
+    // await pref.setInt(appKey, lastCount - 1);
   }
 
   Future<void> fetchPdfUrl(int appId, int docId) async {

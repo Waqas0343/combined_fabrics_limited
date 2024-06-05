@@ -40,6 +40,7 @@ class SplashController extends GetxController {
         Get.offNamed(AppRoutes.introduction);
       } else {
         Get.offNamed(AppRoutes.login);
+
       }
     }
   }

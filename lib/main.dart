@@ -1,10 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:get/get.dart';
 import 'app/routes/app_pages.dart';
 import 'app/routes/app_routes.dart';
-import 'app/services/background_service.dart';
 import 'app/services/services.dart';
 import 'app_assets/app_theme_info.dart';
 import 'app_assets/styles/my_colors.dart';
@@ -15,22 +15,24 @@ FlutterBackgroundService service = FlutterBackgroundService();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await service.configure(
-    androidConfiguration: AndroidConfiguration(
-      onStart: BackgroundService.onStart,
-      autoStart: true,
-      isForegroundMode: true,
-      autoStartOnBoot: true,
-    ),
-    iosConfiguration: IosConfiguration(
-      autoStart: true,
-      onForeground: BackgroundService.onStart,
-      onBackground: (service) => false,
-    ),
-  );
+  await Services().initServices(); // Ensure this is completed before proceeding
+  if (Platform.isAndroid || Platform.isIOS) {
+    await service.configure(
+      androidConfiguration: AndroidConfiguration(
+        onStart: Services.onStart,
+        autoStart: true,
+        isForegroundMode: true,
+        autoStartOnBoot: true,
+      ),
+      iosConfiguration: IosConfiguration(
+        autoStart: true,
+        onForeground: Services.onStart,
+        onBackground: (service) => false,
+      ),
+    );
 
-  await service.startService();
-  await Services().initServices();
+    await service.startService();
+  }
 
   runApp(const MyApp());
 }

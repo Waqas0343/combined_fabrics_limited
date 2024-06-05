@@ -1,3 +1,5 @@
+import 'package:combined_fabrics_limited/main.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../app_assets/styles/strings/app_constants.dart';
@@ -79,17 +81,22 @@ class Preferences extends GetxService {
   }
 
 
-  Future logout() async {
+  Future<void> logout() async {
+    final service = FlutterBackgroundService();
+     service.invoke('stopService');
+
     String? password = Get.find<Preferences>().getString(Keys.password);
     String? userID = Get.find<Preferences>().getString(Keys.userId);
     bool isEnabled = Get.find<Preferences>().getBool(Keys.fingerPrint) ?? false;
     bool rememberMe = Get.find<Preferences>().getBool(Keys.rememberMe) ?? false;
-    await clear();
-    setBool(Keys.isFirstTime, false,);
-    setBool(Keys.fingerPrint, isEnabled);
-    setString(Keys.password, password);
-    setString(Keys.userId, userID);
-    setBool(Keys.rememberMe, rememberMe);
+
+    await Get.find<Preferences>().clear();
+    Get.find<Preferences>().setBool(Keys.isFirstTime, false);
+    Get.find<Preferences>().setBool(Keys.fingerPrint, isEnabled);
+    Get.find<Preferences>().setString(Keys.password, password);
+    Get.find<Preferences>().setString(Keys.userId, userID);
+    Get.find<Preferences>().setBool(Keys.rememberMe, rememberMe);
+
     Get.offAllNamed(AppRoutes.login);
   }
 }

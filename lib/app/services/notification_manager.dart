@@ -1,7 +1,11 @@
+import 'package:combined_fabrics_limited/app/debug/debug_pointer.dart';
+import 'package:combined_fabrics_limited/app/routes/app_routes.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 
 class NotificationManager {
   static final NotificationManager _instance = NotificationManager._internal();
+
   factory NotificationManager() => _instance;
 
   late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
@@ -16,11 +20,16 @@ class NotificationManager {
     AndroidInitializationSettings('@mipmap/ic_launcher');
     const InitializationSettings initializationSettings =
     InitializationSettings(android: initializationSettingsAndroid);
-    await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onDidReceiveNotificationResponse:
+            (NotificationResponse notificationResponse) async {
+          Debug.log("notificationResponse ........ ${notificationResponse.id}");
+          navigateToTargetScreen();
+        });
   }
 
-  int _getNextNotificationId() {
-    return _notificationId++;
+  void navigateToTargetScreen() {
+    Get.to(AppRoutes.home);
   }
 
   Future<void> showNotification(String title, String body) async {
@@ -44,5 +53,9 @@ class NotificationManager {
       body,
       platformChannelSpecifics,
     );
+  }
+
+  int _getNextNotificationId() {
+    return _notificationId++;
   }
 }

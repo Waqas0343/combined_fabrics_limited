@@ -4353,11 +4353,11 @@ class ApiFetch extends getx.GetxService {
         // String params ="$date&appId=${response.data["appId"]}";
         // Debug.log(params);
         final keysResponse = DocumentVerifyAppModel.fromJson(response.data);
-        Get.snackbar(
-          "Message",
-          keysResponse.message,
-          snackPosition: SnackPosition.BOTTOM,
-        );
+        // Get.snackbar(
+        //   "Message",
+        //   keysResponse.message,
+        //   snackPosition: SnackPosition.BOTTOM,
+        // );
         documentVerifyAppList = keysResponse.lists;
       } catch (e, s) {
         Debug.log(e);
