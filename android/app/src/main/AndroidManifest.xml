@@ -59,7 +59,7 @@
         </receiver>
         <service
             android:name="id.flutter.flutter_background_service.BackgroundService"
-            android:foregroundServiceType="dataSync"
+            android:foregroundServiceType="shortService"
             />
     </application>
     <!-- Required to query activities that can process text, see:

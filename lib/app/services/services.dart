@@ -51,7 +51,7 @@ class Services {
       String userId = Get.find<Preferences>().getString(Keys.userId) ?? "";
       if (userId.isNotEmpty) {
         List<DocumentVerifyAppListModel> currentList =
-        await fetchDashboardAppList(userId);
+            await fetchDashboardAppList(userId);
 
         for (var app in currentList) {
           String appKey = 'user_${userId}_lastCount_${app.appid}';
@@ -63,8 +63,10 @@ class Services {
           if (app.documentCount != lastCount) {
             await Get.find<Preferences>().setInt(appKey, app.documentCount);
 
+            // String notificationMessage =
+            //     'You have new documents in ${app.appname}';
             String notificationMessage =
-                'You have new documents in ${app.appname}';
+                'Some documents in ${app.appname} have been processed';
 
             // String notificationMessage = app.documentCount > lastCount
             //     ? 'You have new documents in ${app.appname}'
@@ -84,7 +86,7 @@ class Services {
       String userId) async {
     String param = "userId=$userId";
     List<DocumentVerifyAppListModel>? responseList =
-    await ApiFetch.getVerifyDashboardAppList(param);
+        await ApiFetch.getVerifyDashboardAppList(param);
     return responseList ?? [];
   }
 }

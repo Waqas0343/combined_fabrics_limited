@@ -9,7 +9,7 @@ class NotificationManager {
   factory NotificationManager() => _instance;
 
   late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
-  int _notificationId = 0;
+  int _notificationId = 1;
 
   NotificationManager._internal() {
     _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
