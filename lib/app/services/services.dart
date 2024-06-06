@@ -42,7 +42,7 @@ class Services {
       });
     }
 
-    Timer.periodic(const Duration(seconds: 10), (timer) async {
+    Timer.periodic(const Duration(seconds: 20), (timer) async {
       if (service is AndroidServiceInstance &&
           !(await service.isForegroundService())) {
         return;
@@ -63,12 +63,12 @@ class Services {
           if (app.documentCount != lastCount) {
             await Get.find<Preferences>().setInt(appKey, app.documentCount);
 
-            String notificationMessage =
-                'You have new documents in ${app.appname}';
+            // String notificationMessage =
+            //     'You have new documents in ${app.appname}';
 
-            // String notificationMessage = app.documentCount > lastCount
-            //     ? 'You have new documents in ${app.appname}'
-            //     : 'Some documents in ${app.appname} have been processed';
+            String notificationMessage = app.documentCount > lastCount
+                ? 'You have new documents in ${app.appname}'
+                : 'Some documents in ${app.appname} have been processed';
 
             await notificationManager.showNotification(
               app.appname,

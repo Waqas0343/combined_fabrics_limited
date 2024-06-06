@@ -15,21 +15,26 @@ class NotificationManager {
     _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   }
 
+
   Future<void> init() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
     AndroidInitializationSettings('@mipmap/ic_launcher');
     const InitializationSettings initializationSettings =
     InitializationSettings(android: initializationSettingsAndroid);
     await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse:
-            (NotificationResponse notificationResponse) async {
+        onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) async {
           Debug.log("notificationResponse ........ ${notificationResponse.id}");
-          navigateToTargetScreen();
+          // Get the payload data (if any) from notificationResponse
+          final payload = notificationResponse.payload;
+          navigateToTargetScreen(payload);
         });
   }
-
-  void navigateToTargetScreen() {
-    Get.to(AppRoutes.home);
+  void navigateToTargetScreen([String? payload]) {
+    if (payload != null) {
+      Get.to(AppRoutes.home);
+    } else {
+      Get.to(AppRoutes.home);
+    }
   }
 
   Future<void> showNotification(String title, String body) async {

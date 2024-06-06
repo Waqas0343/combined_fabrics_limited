@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:combined_fabrics_limited/app/debug/debug_pointer.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../app_assets/styles/strings/app_constants.dart';
 import '../../../helpers/toaster.dart';
@@ -16,15 +17,22 @@ class SplashController extends GetxController {
   final RxBool buttonAction = RxBool(true);
   final RxBool isLoading = RxBool(true);
 
-
+  Future<void> _requestPermissions() async {
+    var status = await Permission.notification.status;
+    if (!status.isGranted) {
+      await Permission.notification.request();
+    }
+  }
   @override
   void onInit() {
     bool status = Get.find<Preferences>().getBool(Keys.status) ?? false;
+    _requestPermissions();
     super.onInit();
     if (status && Platform.isAndroid) {
       getMobileVersion();
     } else {
       checkLogin();
+
     }
   }
 
