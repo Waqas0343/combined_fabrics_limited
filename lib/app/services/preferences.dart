@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:combined_fabrics_limited/main.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:get/get.dart';
@@ -82,8 +84,11 @@ class Preferences extends GetxService {
 
 
   Future<void> logout() async {
-    final service = FlutterBackgroundService();
-     service.invoke('stopService');
+    if (Platform.isAndroid || Platform.isIOS) {
+      final service = FlutterBackgroundService();
+      service.invoke('stopService');
+    }
+
 
     String? password = Get.find<Preferences>().getString(Keys.password);
     String? userID = Get.find<Preferences>().getString(Keys.userId);

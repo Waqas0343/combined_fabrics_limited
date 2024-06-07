@@ -66,12 +66,13 @@ class ToolsWidget extends StatelessWidget {
                 bottom: 3,
                 right: 4,
                 child: CircleAvatar(
+                  radius: 20,
                   backgroundColor: Colors.orangeAccent,
                   child: Text(
-                    cnt.toString(),
+                    "$cnt",
                     style: Get.theme.textTheme.bodySmall?.copyWith(
                       color: Colors.white,
-                      fontSize: cardHeight * 0.095,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,

@@ -72,4 +72,5 @@ class AppRoutes {
   /// TODO: Document Verify Routes
   static const String stockAdjustmentScreen = "/stock_adjustment_screen";
   static const String documentApprovalScreen = "/document_approval_screen";
+  static const String fullScreenPdfView = "/full_screen_pdf_view";
 }

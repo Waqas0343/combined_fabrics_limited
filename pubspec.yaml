@@ -64,6 +64,7 @@ dependencies:
   web_socket_channel: ^2.4.0
   nfc_manager: ^3.4.0
   rfid: ^0.0.28
+  syncfusion_flutter_pdfviewer: ^22.2.12
   flutter_pdfview: 1.2.9
   printing: ^5.11.1
   excel: ^4.0.2

@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
     <application
         android:label="CFL-MIS"
         android:enableOnBackInvokedCallback="true"
@@ -59,7 +60,7 @@
         </receiver>
         <service
             android:name="id.flutter.flutter_background_service.BackgroundService"
-            android:foregroundServiceType="shortService"
+            android:foregroundServiceType="dataSync"
             />
     </application>
     <!-- Required to query activities that can process text, see:

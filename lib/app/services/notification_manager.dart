@@ -1,6 +1,7 @@
-import 'package:combined_fabrics_limited/app/debug/debug_pointer.dart';
+import 'dart:ui';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:combined_fabrics_limited/app/routes/app_routes.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class NotificationManager {
@@ -8,27 +9,28 @@ class NotificationManager {
 
   factory NotificationManager() => _instance;
 
-  late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
-  int _notificationId = 1;
-
   NotificationManager._internal() {
-    _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    AwesomeNotifications().initialize(
+      null,
+      [
+        NotificationChannel(
+          channelKey: 'basic_channel',
+          channelName: 'Basic notifications',
+          channelDescription: 'Notification channel for basic tests',
+          defaultColor: const Color(0xFF9D50DD),
+          ledColor: Colors.white,
+        ),
+      ],
+      debug: true,
+    );
+  }
+  @pragma("vm:entry-point")
+  static Future <void> onActionReceivedMethod(ReceivedAction receivedAction) async {
+    // Your code goes here
+
+    Get.to(AppRoutes.verifyDocumentDashBoard);
   }
 
-
-  Future<void> init() async {
-    const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
-    const InitializationSettings initializationSettings =
-    InitializationSettings(android: initializationSettingsAndroid);
-    await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) async {
-          Debug.log("notificationResponse ........ ${notificationResponse.id}");
-          // Get the payload data (if any) from notificationResponse
-          final payload = notificationResponse.payload;
-          navigateToTargetScreen(payload);
-        });
-  }
   void navigateToTargetScreen([String? payload]) {
     if (payload != null) {
       Get.to(AppRoutes.home);
@@ -38,29 +40,14 @@ class NotificationManager {
   }
 
   Future<void> showNotification(String title, String body) async {
-    int notificationId = _getNextNotificationId();
-
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
-      'your_channel_id',
-      'your_channel_name',
-      channelDescription: 'your_channel_description',
-      importance: Importance.max,
-      priority: Priority.high,
-      showWhen: true,
+    await AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: DateTime.now().millisecondsSinceEpoch.remainder(1 << 31),
+        channelKey: 'basic_channel',
+        title: title,
+        body: body,
+        notificationLayout: NotificationLayout.Default,
+      ),
     );
-    const NotificationDetails platformChannelSpecifics =
-    NotificationDetails(android: androidPlatformChannelSpecifics);
-
-    await _flutterLocalNotificationsPlugin.show(
-      notificationId,
-      title,
-      body,
-      platformChannelSpecifics,
-    );
-  }
-
-  int _getNextNotificationId() {
-    return _notificationId++;
   }
 }

@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import '../../../../app_assets/styles/strings/app_constants.dart';
 import '../../../server/api_fetch.dart';
 import '../../../services/preferences.dart';
@@ -26,17 +25,17 @@ class DocumentApprovalController extends GetxController {
   final RxList<NextLevelUsersListModel> rejectedUsers =
       RxList<NextLevelUsersListModel>();
   final RxBool isLoading = RxBool(true);
+  final RxBool isLoadingPdf = RxBool(true);
 
   var selectedUser = Rx<NextLevelUsersListModel?>(null);
   var comments = ''.obs;
   late PendingDocumentsListModel pendingDocumentsListModel;
   final DateFormat dateFormat = DateFormat(Keys.dateFormat);
   Rx<DateTime> dateTime = DateTime.now().obs;
-  var pdfUrl = ''.obs;
+  var file; // Changed pdfUrl to file
   var pages = 0.obs;
   var isReady = false.obs;
   String? appName;
-  late PDFViewController pdfViewController;
 
   @override
   void onInit() {
@@ -167,10 +166,11 @@ class DocumentApprovalController extends GetxController {
   }
 
   Future<void> fetchPdfUrl(int appId, int docId) async {
+    isLoadingPdf(true);
     String param = "appId=$appId&documentsId=$docId";
-    Debug.log("...............${pdfUrl.value}");
-    var file = await createFileOfPdfUrl(ServerConfig.getVerifyGetFile + param);
-    pdfUrl.value = file.path;
+    Debug.log("...............${ServerConfig.getVerifyGetFile + param}");
+    file = await createFileOfPdfUrl(ServerConfig.getVerifyGetFile + param);
+    isLoadingPdf(false);
   }
 
   Future<File> fromAsset(String asset, String filename) async {
@@ -194,19 +194,27 @@ class DocumentApprovalController extends GetxController {
     Completer<File> completer = Completer();
     try {
       final url = filePath;
-      final filename = url.substring(url.lastIndexOf("/") + 1);
-      var request = await HttpClient().getUrl(Uri.parse(url));
-      var response = await request.close();
-      var bytes = await consolidateHttpClientResponseBytes(response);
-      var dir = await getApplicationDocumentsDirectory();
-      File file = File("${dir.path}/$filename");
+      final uri = Uri.parse(url);
+      final filename = uri.pathSegments.last; // Extract filename from URL
 
-      await file.writeAsBytes(bytes, flush: true);
-      completer.complete(file);
+      var request = await HttpClient().getUrl(uri);
+      var response = await request.close();
+      if (response.statusCode == 200) {
+        var bytes = await consolidateHttpClientResponseBytes(response);
+        var dir = await getApplicationDocumentsDirectory();
+        File file = File("${dir.path}/$filename");
+
+        await file.writeAsBytes(bytes, flush: true);
+        completer.complete(file);
+      } else {
+        throw Exception('Failed to load PDF: ${response.statusCode}');
+      }
     } catch (e) {
-      throw Exception('Error parsing asset file!');
+      throw Exception('Error fetching or saving PDF: $e');
     }
 
     return completer.future;
   }
+
+
 }

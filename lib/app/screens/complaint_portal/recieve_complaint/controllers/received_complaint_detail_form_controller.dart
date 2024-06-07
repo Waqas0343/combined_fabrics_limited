@@ -1,4 +1,5 @@
 import 'package:combined_fabrics_limited/app/debug/debug_pointer.dart';
+import 'package:combined_fabrics_limited/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -16,24 +17,17 @@ import '../../complaint_models/get_to_department_model.dart';
 class ReceivedComplaintDetailFormController extends GetxController {
   final TextEditingController planStartDateController = TextEditingController();
   final TextEditingController planEndDateController = TextEditingController();
-  final TextEditingController actualStartDateController =
-      TextEditingController();
+  final TextEditingController actualStartDateController = TextEditingController();
   final TextEditingController actualEndDateController = TextEditingController();
-  final RxList<ToDepartmentListModel> toDepartmentList =
-      RxList<ToDepartmentListModel>();
-  final Rxn<ToDepartmentListModel?> selectedToDepartment =
-      Rxn<ToDepartmentListModel?>();
+  final RxList<ToDepartmentListModel> toDepartmentList = RxList<ToDepartmentListModel>();
+  final Rxn<ToDepartmentListModel?> selectedToDepartment = Rxn<ToDepartmentListModel?>();
   final TextEditingController textarea = TextEditingController();
-  final Rxn<DepartmentComplaintListModel> complaintModel =
-      Rxn<DepartmentComplaintListModel>();
-  final RxList<EmployeeByDepartmentListModel> employeeList =
-      RxList<EmployeeByDepartmentListModel>();
-  final RxList<ComplaintAssigneeListModel> assigneePerson =
-      RxList<ComplaintAssigneeListModel>();
-  final Rxn<EmployeeByDepartmentListModel?> selectEmp =
-      Rxn<EmployeeByDepartmentListModel?>();
-  final Rxn<GetComplaintByNoDataModel?> complaintData =
-      Rxn<GetComplaintByNoDataModel?>();
+  final Rxn<DepartmentComplaintListModel> complaintModel = Rxn<DepartmentComplaintListModel>();
+  final RxList<EmployeeByDepartmentListModel> employeeList = RxList<EmployeeByDepartmentListModel>();
+  final RxList<ComplaintAssigneeListModel> assigneePerson = RxList<ComplaintAssigneeListModel>();
+  final Rxn<ComplaintAssigneeListModel> selectedAssigneePerson = Rxn<ComplaintAssigneeListModel>();
+  final Rxn<EmployeeByDepartmentListModel?> selectEmp = Rxn<EmployeeByDepartmentListModel?>();
+  final Rxn<GetComplaintByNoDataModel?> complaintData = Rxn<GetComplaintByNoDataModel?>();
   final RxList<DemandListModel> demandList = RxList<DemandListModel>();
   final Color selectedIconColor = Colors.blue;
   final Color selectedLabelColor = Colors.blue;
@@ -50,6 +44,9 @@ class ReceivedComplaintDetailFormController extends GetxController {
   final RxBool hasSearchText = RxBool(false);
   int activeStep = 0;
   String? complaintDecider = '';
+  final DateFormat dateFormat = DateFormat(Keys.dateFormat);
+  final DateFormat timeFormat = DateFormat(Keys.timeFormat);
+  DateTime dateTime = DateTime.now();
 
   @override
   void onInit() {
@@ -73,7 +70,7 @@ class ReceivedComplaintDetailFormController extends GetxController {
   Future<void> getToDepartment() async {
     isLoading(true);
     List<ToDepartmentListModel>? responseList =
-        await ApiFetch.getToDepartments();
+    await ApiFetch.getToDepartments();
     isLoading(false);
     if (responseList != null) {
       toDepartmentList.assignAll(responseList);
@@ -83,8 +80,7 @@ class ReceivedComplaintDetailFormController extends GetxController {
   Future<void> getEmployeeByDept() async {
     String params = "DeptCode=${complaintModel.value?.toDeptCode}";
     isLoading(true);
-    List<EmployeeByDepartmentListModel>? responseList =
-        await ApiFetch.getEmployeeByDept(params);
+    List<EmployeeByDepartmentListModel>? responseList = await ApiFetch.getEmployeeByDept(params);
     isLoading(false);
     if (responseList != null) {
       employeeList.assignAll(responseList);
@@ -94,8 +90,7 @@ class ReceivedComplaintDetailFormController extends GetxController {
   Future<void> getAssigneePerson() async {
     String params = "CMPNO=${complaintModel.value?.cmpNo}";
     isLoading(true);
-    List<ComplaintAssigneeListModel>? responseList =
-        await ApiFetch.getAssigneePerson(params);
+    List<ComplaintAssigneeListModel>? responseList = await ApiFetch.getAssigneePerson(params);
     isLoading(false);
     if (responseList != null) {
       assigneePerson.assignAll(responseList);
@@ -103,11 +98,6 @@ class ReceivedComplaintDetailFormController extends GetxController {
   }
 
   Future<void> removeAssignee(ComplaintAssigneeListModel assigneeModel) async {
-    // if (!await Connectivity.isOnline()) {
-    //   Connectivity.internetNotAvailable();
-    //   return;
-    // }
-
     Map<String, dynamic> data = {
       "CmpNo": complaintModel.value?.cmpNo,
       "AssignedPerson": assigneeModel.employeeCode,
@@ -120,7 +110,7 @@ class ReceivedComplaintDetailFormController extends GetxController {
         'Employee Removed Successfully!',
         snackPosition: SnackPosition.TOP,
       );
-      assigneePerson.remove(assigneeModel); // Remove the employee from the list
+      assigneePerson.remove(assigneeModel);
     } else {
       Get.snackbar(
         "Message",
@@ -130,16 +120,10 @@ class ReceivedComplaintDetailFormController extends GetxController {
     }
   }
 
-  Future<void> addAssignee(
-      EmployeeByDepartmentListModel selectedEmployee) async {
-    // if (!await Connectivity.isOnline()) {
-    //   Connectivity.internetNotAvailable();
-    //   return;
-    // }
-
+  Future<void> addAssignee(EmployeeByDepartmentListModel selectedEmployee) async {
     Map<String, dynamic> data = {
       "CmpNo": complaintModel.value?.cmpNo,
-      "UserId": name, // Assuming employeeCode is already defined
+      "UserId": name,
       "AssignedPerson": selectedEmployee.employeeCode,
     };
 
@@ -150,7 +134,7 @@ class ReceivedComplaintDetailFormController extends GetxController {
         'Employee Added Successfully!',
         snackPosition: SnackPosition.TOP,
       );
-      await getAssigneePerson(); // Call the function to update the list
+      await getAssigneePerson();
     } else {
       Get.snackbar(
         "Message",
@@ -161,11 +145,6 @@ class ReceivedComplaintDetailFormController extends GetxController {
   }
 
   Future<void> changeDepartment(ToDepartmentListModel selectedEmployee) async {
-    // if (!await Connectivity.isOnline()) {
-    //   Connectivity.internetNotAvailable();
-    //   return;
-    // }
-
     Map<String, dynamic> data = {
       "CmpNo": complaintModel.value?.cmpNo,
       "StatusBy": name,
@@ -179,7 +158,8 @@ class ReceivedComplaintDetailFormController extends GetxController {
         'Change Department Successfully!',
         snackPosition: SnackPosition.TOP,
       );
-      await getAssigneePerson(); // Call the function to update the list
+      await getAssigneePerson();
+      Get.offAllNamed(AppRoutes.home);
     } else {
       Get.snackbar(
         "Message",
@@ -190,16 +170,12 @@ class ReceivedComplaintDetailFormController extends GetxController {
   }
 
   Future<void> setPlanDate() async {
-    // if (!await Connectivity.isOnline()) {
-    //   Connectivity.internetNotAvailable();
-    //   return;
-    // }
     String selectedPlanStartDate = planStartDateController.text.isNotEmpty
         ? planStartDateController.text.toString()
         : "";
 
     String selectedPlanEndDate =
-        planEndDateController.text.isNotEmpty ? planEndDateController.text : "";
+    planEndDateController.text.isNotEmpty ? planEndDateController.text : "";
 
     Map<String, dynamic> data = {
       "CmpNo": complaintModel.value?.cmpNo,
@@ -226,10 +202,6 @@ class ReceivedComplaintDetailFormController extends GetxController {
   }
 
   Future<void> setActualDate() async {
-    // if (!await Connectivity.isOnline()) {
-    //   Connectivity.internetNotAvailable();
-    //   return;
-    // }
     String selectedActualStartDate = actualStartDateController.text.isNotEmpty
         ? actualStartDateController.text
         : " ";
@@ -262,8 +234,7 @@ class ReceivedComplaintDetailFormController extends GetxController {
     }
   }
 
-  Future<void> selectDate(
-      BuildContext context, TextEditingController controller) async {
+  Future<void> selectDate(BuildContext context, TextEditingController controller) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -273,17 +244,11 @@ class ReceivedComplaintDetailFormController extends GetxController {
 
     if (picked != null && picked != DateTime.now()) {
       String formattedDate = DateFormat().format(picked);
-      controller.text =
-          formattedDate; // Update the text field with the formatted date
+      controller.text = formattedDate;
     }
   }
 
   Future<void> closeComplaint() async {
-    // if (!await Connectivity.isOnline()) {
-    //   Connectivity.internetNotAvailable();
-    //   return;
-    // }
-
     Map<String, dynamic> data = {
       "CmpNo": complaintModel.value?.cmpNo,
       "UserId": name,
@@ -308,11 +273,6 @@ class ReceivedComplaintDetailFormController extends GetxController {
   }
 
   Future<void> resolveComplaint() async {
-    // if (!await Connectivity.isOnline()) {
-    //   Connectivity.internetNotAvailable();
-    //   return;
-    // }
-
     Map<String, dynamic> data = {
       "CmpNo": complaintModel.value?.cmpNo,
       "UserId": name,
@@ -453,7 +413,7 @@ class ReceivedComplaintDetailFormController extends GetxController {
     String params = "CMPNO=${complaintModel.value?.cmpNo}";
     try {
       GetComplaintByNoDataModel? response =
-          await ApiFetch.getComplaintByCMPNO(params);
+      await ApiFetch.getComplaintByCMPNO(params);
       isLoading.value = false;
       if (response != null) {
         complaintData.value = response;
@@ -482,7 +442,7 @@ class ReceivedComplaintDetailFormController extends GetxController {
         "&Srno=${complaintModel.value?.demandSrno ?? demandSerialTextController.text}";
     isLoading(true);
     List<DemandListModel>? responseList =
-        await ApiFetch.getComplaintDemand(params);
+    await ApiFetch.getComplaintDemand(params);
     isLoading(false);
     if (responseList != null && responseList.isNotEmpty) {
       demandList.assignAll(responseList);
@@ -572,3 +532,4 @@ class TableRowData {
 
   TableRowData({required this.id, required this.empName});
 }
+

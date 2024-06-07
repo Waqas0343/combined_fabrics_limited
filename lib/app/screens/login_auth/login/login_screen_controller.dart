@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:combined_fabrics_limited/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
@@ -62,8 +64,11 @@ class LoginController extends GetxController {
     Get.find<Preferences>().setBool(Keys.isAllowedFfsapp, decodedTokenData["IsAllowedFfsapp"] == "True");
     Get.find<Preferences>().setString(Keys.cmpType, decodedTokenData["CmpType"]);
     Get.find<Preferences>().setBool(Keys.status, true);
-    final service = FlutterBackgroundService();
-    await service.startService();
+    if (Platform.isAndroid || Platform.isIOS) {
+      final service = FlutterBackgroundService();
+      await service.startService();
+    }
+
     Get.offAllNamed(AppRoutes.home);
   }
 
