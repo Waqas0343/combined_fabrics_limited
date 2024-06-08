@@ -201,8 +201,18 @@ class DocumentApprovalScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            Get.toNamed(AppRoutes.documentHistoryTimelinePage,
+                                arguments: {
+                                  'appLogId': controller
+                                      .pendingDocumentsListModel.applogid
+                                });
+                          },
+                          child: const Text('Track Document'),
+                        ),
                         ElevatedButton(
                           onPressed: () {
                             Get.toNamed(AppRoutes.fullScreenPdfView,

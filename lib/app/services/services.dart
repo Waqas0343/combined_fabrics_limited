@@ -61,8 +61,10 @@ class Services {
               "....$appKey....appid....${app.appid}.appname...${app.appname}.lastCount...$lastCount.documentCount....${app.documentCount}");
 
           if (app.documentCount != lastCount) {
+            await Get.find<Preferences>().setInt(appKey, app.documentCount);
             if (app.documentCount > lastCount) {
-              await Get.find<Preferences>().setInt(appKey, app.documentCount);
+              Debug.log("......................there is new doc");
+
 
               String notificationMessage =
                   'You have new documents in ${app.appname}';

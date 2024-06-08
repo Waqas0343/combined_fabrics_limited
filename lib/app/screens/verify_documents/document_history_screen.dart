@@ -1,0 +1,93 @@
+import 'package:combined_fabrics_limited/app/app_widgets/custom_card.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:timeline_tile/timeline_tile.dart';
+import '../../../app_assets/styles/my_colors.dart';
+import 'verify_controllers/document_history_controller.dart';
+import 'package:intl/intl.dart';
+
+class DocumentHistoryTimelinePage extends StatelessWidget {
+  const DocumentHistoryTimelinePage({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final DocumentHistoryController controller =
+        Get.put(DocumentHistoryController());
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Document History'),
+      ),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return ListView.builder(
+            itemCount: controller.documentHistoryList.length,
+            itemBuilder: (context, index) {
+              final history = controller.documentHistoryList[index];
+              return TimelineTile(
+                alignment: TimelineAlign.start,
+                isFirst: index == 0,
+                isLast: index == controller.documentHistoryList.length - 1,
+                indicatorStyle: IndicatorStyle(
+                  width: 40,
+                  color: MyColors.greenLight,
+                  padding: const EdgeInsets.all(6),
+                  iconStyle: IconStyle(
+                    color: Colors.white,
+                    iconData: Icons.check_circle_outline,
+                  ),
+                ),
+                endChild: CustomCard(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListTile(
+                      title: Text(
+                        history.comments,
+                        style: Get.textTheme.titleSmall,
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 5),
+                          Text(
+                            'Date: ${DateFormat('EEEE, MMMM d, yyyy').format(history.audtdatetime)}',
+                            style: Get.textTheme.titleSmall,
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            'Time: ${DateFormat('h:mm a').format(history.audtdatetime)}',
+                            style:Get.textTheme.titleSmall,
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            'User: ${history.username}',
+                            style: Get.textTheme.titleSmall,
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            'Status: ${history.status}',
+                            style:Get.textTheme.titleSmall,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                beforeLineStyle: const LineStyle(
+                  color: MyColors.greenLight,
+                  thickness: 4,
+                ),
+              );
+            },
+          );
+        }
+      }),
+    );
+  }
+}

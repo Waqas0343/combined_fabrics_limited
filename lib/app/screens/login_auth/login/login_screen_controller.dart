@@ -64,10 +64,10 @@ class LoginController extends GetxController {
     Get.find<Preferences>().setBool(Keys.isAllowedFfsapp, decodedTokenData["IsAllowedFfsapp"] == "True");
     Get.find<Preferences>().setString(Keys.cmpType, decodedTokenData["CmpType"]);
     Get.find<Preferences>().setBool(Keys.status, true);
-    if (Platform.isAndroid || Platform.isIOS) {
-      final service = FlutterBackgroundService();
-      await service.startService();
-    }
+    // if (Platform.isAndroid || Platform.isIOS) {
+    //   final service = FlutterBackgroundService();
+    //   await service.startService();
+    // }
 
     Get.offAllNamed(AppRoutes.home);
   }

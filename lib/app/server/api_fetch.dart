@@ -84,6 +84,7 @@ import '../screens/rowing_inspection/rowing_quality_in_line_reports/rowing_quali
 import '../screens/rowing_inspection/rowing_quality_in_line_reports/rowing_quality_check_stitching_production/rowing_quality_check_stitching_producntion_models/rowing_quality_check_operator_production_report_model.dart';
 import '../screens/rowing_inspection/rowing_quality_in_line_reports/rowing_quality_check_stitching_production/rowing_quality_check_stitching_producntion_models/rowing_quality_work_order_summary_report_model.dart';
 import '../screens/splash/mobile_app_version_model.dart';
+import '../screens/verify_documents/verify_models/document_history.dart';
 import '../screens/verify_documents/verify_models/next_levels_users.dart';
 import '../screens/verify_documents/verify_models/pending_documents_model.dart';
 import '../screens/verify_documents/verify_models/verify_doc_dashboard_model.dart';
@@ -4556,5 +4557,50 @@ class ApiFetch extends getx.GetxService {
       }
     }
     return pdfUrl;
+  }
+
+  static Future<List<DocumentHistoryList>?> getDocHistory(date) async {
+    Response response;
+    List<DocumentHistoryList>? modelList;
+    try {
+      Debug.log(ServerConfig.getDocHistory + date);
+      String url = ServerConfig.getDocHistory + date;
+      String token = Get.find<Preferences>().getString(Keys.token) ?? "";
+
+      final headers = {
+        "Authorization": "Bearer $token",
+      };
+
+      response = await dio.get(
+        url,
+        options: Options(
+          headers: headers,
+        ),
+      );
+    } catch (e, s) {
+      Debug.log(e);
+      Debug.log(s);
+      return modelList;
+    }
+
+    if (response.statusCode == 200) {
+      Debug.log(response.data.toString());
+      try {
+        final keysResponse = DocumentHistory.fromJson(response.data);
+        if (keysResponse.lists.isNotEmpty) {
+          Get.snackbar(
+            "Message",
+            keysResponse.message,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        }
+
+        modelList = keysResponse.lists;
+      } catch (e, s) {
+        Debug.log(e);
+        Debug.log(s);
+      }
+    }
+    return modelList;
   }
 }

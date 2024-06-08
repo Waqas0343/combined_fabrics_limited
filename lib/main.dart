@@ -17,23 +17,23 @@ FlutterBackgroundService service = FlutterBackgroundService();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Services().initServices(); // Ensure this is completed before proceeding
-  if (Platform.isAndroid || Platform.isIOS) {
-    await service.configure(
-      androidConfiguration: AndroidConfiguration(
-        onStart: Services.onStart,
-        autoStart: true,
-        isForegroundMode: true,
-        autoStartOnBoot: true,
-      ),
-      iosConfiguration: IosConfiguration(
-        autoStart: true,
-        onForeground: Services.onStart,
-        onBackground: (service) => false,
-      ),
-    );
-
-    await service.startService();
-  }
+  // if (Platform.isAndroid || Platform.isIOS) {
+  //   await service.configure(
+  //     androidConfiguration: AndroidConfiguration(
+  //       onStart: Services.onStart,
+  //       autoStart: true,
+  //       isForegroundMode: true,
+  //       autoStartOnBoot: true,
+  //     ),
+  //     iosConfiguration: IosConfiguration(
+  //       autoStart: true,
+  //       onForeground: Services.onStart,
+  //       onBackground: (service) => false,
+  //     ),
+  //   );
+  //
+  //   await service.startService();
+  // }
 
   runApp(const MyApp());
 }

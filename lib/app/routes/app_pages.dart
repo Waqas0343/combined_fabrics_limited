@@ -64,6 +64,7 @@ import '../screens/rowing_inspection/rowing_quality_in_line_scan_nfc.dart';
 import '../screens/rowing_inspection/rowing_quality_scan_rfid_for_end_line.dart';
 import '../screens/splash/splash_screen.dart';
 import '../screens/verify_documents/document_approval_screen.dart';
+import '../screens/verify_documents/document_history_screen.dart';
 import '../screens/verify_documents/full_screen_pdf_view.dart';
 import '../screens/verify_documents/stock_adjustment_screen.dart';
 import '../screens/verify_documents/verify_documents_DashBoard.dart';
@@ -338,9 +339,14 @@ class AppPages {
     GetPage(
       name: AppRoutes.documentApprovalScreen,
       page: () => const DocumentApprovalScreen(),
-    ), GetPage(
+    ),
+    GetPage(
       name: AppRoutes.fullScreenPdfView,
-      page: () =>  const FullScreenPdfView(),
+      page: () => const FullScreenPdfView(),
+    ),
+    GetPage(
+      name: AppRoutes.documentHistoryTimelinePage,
+      page: () => const DocumentHistoryTimelinePage(),
     ),
   ];
 }

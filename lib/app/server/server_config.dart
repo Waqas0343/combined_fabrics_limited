@@ -154,6 +154,7 @@ class ServerConfig {
   static const getVerifyBelowLevelUsersList = "${baseUrl}DocApprovel/GetBelowLevelsUsers?";
   static const getVerifyUpdateAppLevel = "${baseUrl}DocApprovel/UpdateAppLevel";
   static const getVerifyGetFile = "${baseUrl}DocApprovel/GetFile?";
+  static const getDocHistory = "${baseUrl}DocApprovel/GetDocHistory?";
 
 
 }
