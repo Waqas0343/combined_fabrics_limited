@@ -120,7 +120,8 @@ class DocumentApprovalController extends GetxController {
             selectedUser: selectedUser.value!.userid,
             status: status.value == 'approved' ? 1 : 0,
             comments: comments.value,
-            rejectLevel: 4,
+            rejectLevel:
+                status.value == 'approved' ? 4 : selectedUser.value!.authlevel,
             domainUser: '',
             loginUser: employeeName,
             computerName: '',
@@ -132,7 +133,8 @@ class DocumentApprovalController extends GetxController {
             selectedUser: '',
             status: status.value == 'approved' ? 1 : 0,
             comments: comments.value,
-            rejectLevel: 4,
+            rejectLevel:
+                status.value == 'approved' ? 4 : selectedUser.value!.authlevel,
             domainUser: '',
             loginUser: employeeName,
             computerName: '',
@@ -215,6 +217,4 @@ class DocumentApprovalController extends GetxController {
 
     return completer.future;
   }
-
-
 }
