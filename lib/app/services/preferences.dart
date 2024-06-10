@@ -84,10 +84,10 @@ class Preferences extends GetxService {
 
 
   Future<void> logout() async {
-    if (Platform.isAndroid || Platform.isIOS) {
-      final service = FlutterBackgroundService();
-      service.invoke('stopService');
-    }
+    // if (Platform.isAndroid || Platform.isIOS) {
+    //   final service = FlutterBackgroundService();
+    //   service.invoke('stopService');
+    // }
 
 
     String? password = Get.find<Preferences>().getString(Keys.password);

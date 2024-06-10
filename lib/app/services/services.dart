@@ -20,77 +20,77 @@ class Services {
     await Get.putAsync<Preferences>(() => Preferences().initial());
   }
 
-  static void onStart(ServiceInstance service) async {
-    final NotificationManager notificationManager = NotificationManager();
-    // await notificationManager.init();
-
-    // Initialize Preferences within the background service
-    final prefs = await Preferences().initial();
-    Get.put(prefs, permanent: true);
-
-    if (service is AndroidServiceInstance) {
-      service.on('setAsForeground').listen((event) {
-        service.setAsForegroundService();
-      });
-
-      service.on('setAsBackground').listen((event) {
-        service.setAsBackgroundService();
-      });
-
-      service.on('stopService').listen((event) {
-        service.stopSelf();
-      });
-    }
-
-    Timer.periodic(const Duration(seconds: 20), (timer) async {
-      if (service is AndroidServiceInstance &&
-          !(await service.isForegroundService())) {
-        return;
-      }
-
-      String userId = Get.find<Preferences>().getString(Keys.userId) ?? "";
-      if (userId.isNotEmpty) {
-        List<DocumentVerifyAppListModel> currentList =
-            await fetchDashboardAppList(userId);
-
-        for (var app in currentList) {
-          String appKey = 'user_${userId}_lastCount_${app.appid}';
-
-          int lastCount = Get.find<Preferences>().getInt(appKey) ?? 0;
-          Debug.log(
-              "....$appKey....appid....${app.appid}.appname...${app.appname}.lastCount...$lastCount.documentCount....${app.documentCount}");
-
-          if (app.documentCount != lastCount) {
-            await Get.find<Preferences>().setInt(appKey, app.documentCount);
-            if (app.documentCount > lastCount) {
-              Debug.log("......................there is new doc");
-
-
-              String notificationMessage =
-                  'You have new documents in ${app.appname}';
-              // String notificationMessage =
-              //     'Some documents in ${app.appname} have been processed';
-              //
-              // String notificationMessage = app.documentCount > lastCount
-              //     ? 'You have new documents in ${app.appname}'
-              //     : 'Some documents in ${app.appname} have been processed';
-
-              await notificationManager.showNotification(
-                app.appname,
-                notificationMessage,
-              );
-            }
-          }
-        }
-      }
-    });
-  }
-
-  static Future<List<DocumentVerifyAppListModel>> fetchDashboardAppList(
-      String userId) async {
-    String param = "userId=$userId";
-    List<DocumentVerifyAppListModel>? responseList =
-        await ApiFetch.getVerifyDashboardAppList(param);
-    return responseList ?? [];
-  }
+  // static void onStart(ServiceInstance service) async {
+  //   final NotificationManager notificationManager = NotificationManager();
+  //   // await notificationManager.init();
+  //
+  //   // Initialize Preferences within the background service
+  //   final prefs = await Preferences().initial();
+  //   Get.put(prefs, permanent: true);
+  //
+  //   if (service is AndroidServiceInstance) {
+  //     service.on('setAsForeground').listen((event) {
+  //       service.setAsForegroundService();
+  //     });
+  //
+  //     service.on('setAsBackground').listen((event) {
+  //       service.setAsBackgroundService();
+  //     });
+  //
+  //     service.on('stopService').listen((event) {
+  //       service.stopSelf();
+  //     });
+  //   }
+  //
+  //   Timer.periodic(const Duration(seconds: 20), (timer) async {
+  //     if (service is AndroidServiceInstance &&
+  //         !(await service.isForegroundService())) {
+  //       return;
+  //     }
+  //
+  //     String userId = Get.find<Preferences>().getString(Keys.userId) ?? "";
+  //     if (userId.isNotEmpty) {
+  //       List<DocumentVerifyAppListModel> currentList =
+  //           await fetchDashboardAppList(userId);
+  //
+  //       for (var app in currentList) {
+  //         String appKey = 'user_${userId}_lastCount_${app.appid}';
+  //
+  //         int lastCount = Get.find<Preferences>().getInt(appKey) ?? 0;
+  //         Debug.log(
+  //             "....$appKey....appid....${app.appid}.appname...${app.appname}.lastCount...$lastCount.documentCount....${app.documentCount}");
+  //
+  //         if (app.documentCount != lastCount) {
+  //           await Get.find<Preferences>().setInt(appKey, app.documentCount);
+  //           if (app.documentCount > lastCount) {
+  //             Debug.log("......................there is new doc");
+  //
+  //
+  //             String notificationMessage =
+  //                 'You have new documents in ${app.appname}';
+  //             // String notificationMessage =
+  //             //     'Some documents in ${app.appname} have been processed';
+  //             //
+  //             // String notificationMessage = app.documentCount > lastCount
+  //             //     ? 'You have new documents in ${app.appname}'
+  //             //     : 'Some documents in ${app.appname} have been processed';
+  //
+  //             await notificationManager.showNotification(
+  //               app.appname,
+  //               notificationMessage,
+  //             );
+  //           }
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
+  //
+  // static Future<List<DocumentVerifyAppListModel>> fetchDashboardAppList(
+  //     String userId) async {
+  //   String param = "userId=$userId";
+  //   List<DocumentVerifyAppListModel>? responseList =
+  //       await ApiFetch.getVerifyDashboardAppList(param);
+  //   return responseList ?? [];
+  // }
 }
