@@ -30,17 +30,30 @@ class DocumentHistoryTimelinePage extends StatelessWidget {
             itemCount: controller.documentHistoryList.length,
             itemBuilder: (context, index) {
               final history = controller.documentHistoryList[index];
+
+              // Determine the status and color based on the index
+              final status = index == 0 ? 0 : history.status;
+              final color = index == 0
+                  ? MyColors.greenLight
+                  : (history.status == 1
+                      ? MyColors.greenLight
+                      : Colors.redAccent);
+
               return TimelineTile(
                 alignment: TimelineAlign.start,
                 isFirst: index == 0,
                 isLast: index == controller.documentHistoryList.length - 1,
                 indicatorStyle: IndicatorStyle(
                   width: 40,
-                  color: MyColors.greenLight,
+                  color: color,
                   padding: const EdgeInsets.all(6),
                   iconStyle: IconStyle(
                     color: Colors.white,
-                    iconData: Icons.check_circle_outline,
+                    iconData: index == 0
+                        ? Icons.person
+                        : status == 1
+                            ? Icons.check
+                            : Icons.close,
                   ),
                 ),
                 endChild: CustomCard(
@@ -62,7 +75,7 @@ class DocumentHistoryTimelinePage extends StatelessWidget {
                           const SizedBox(height: 5),
                           Text(
                             'Time: ${DateFormat('h:mm a').format(history.audtdatetime)}',
-                            style:Get.textTheme.titleSmall,
+                            style: Get.textTheme.titleSmall,
                           ),
                           const SizedBox(height: 5),
                           Text(
@@ -70,17 +83,18 @@ class DocumentHistoryTimelinePage extends StatelessWidget {
                             style: Get.textTheme.titleSmall,
                           ),
                           const SizedBox(height: 5),
-                          Text(
-                            'Status: ${history.status}',
-                            style:Get.textTheme.titleSmall,
-                          ),
+                          if (index != 0)
+                            Text(
+                              'Status: ${status == 1 ? 'Approved' : 'Rejected'}',
+                              style: Get.textTheme.titleSmall,
+                            ),
                         ],
                       ),
                     ),
                   ),
                 ),
-                beforeLineStyle: const LineStyle(
-                  color: MyColors.greenLight,
+                beforeLineStyle: LineStyle(
+                  color: color,
                   thickness: 4,
                 ),
               );

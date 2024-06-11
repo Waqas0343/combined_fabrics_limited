@@ -44,7 +44,7 @@ class DocumentApprovalController extends GetxController {
     pendingDocumentsListModel = arguments['docItem'];
     appName = arguments['AppName'];
     getNextLevelUsers(pendingDocumentsListModel.applogid);
-    getBelowLevelUsers(pendingDocumentsListModel.appid);
+    getBelowLevelUsers(pendingDocumentsListModel.applogid);
     fetchPdfUrl(
         pendingDocumentsListModel.appid, pendingDocumentsListModel.docnum);
   }
@@ -87,10 +87,10 @@ class DocumentApprovalController extends GetxController {
     }
   }
 
-  Future<void> getBelowLevelUsers(int? appId) async {
+  Future<void> getBelowLevelUsers(int? appLogId) async {
     isLoading(true);
     final responseList =
-        await ApiFetch.getBelowLevelUsers("appId=$appId&userId=$employeeName");
+        await ApiFetch.getBelowLevelUsers("appLogId=$appLogId");
     isLoading(false);
     if (responseList != null) {
       rejectedUsers.assignAll(responseList);
