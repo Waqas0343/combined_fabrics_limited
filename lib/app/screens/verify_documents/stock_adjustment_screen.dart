@@ -78,13 +78,13 @@ class StockAdjustmentHomeScreen extends StatelessWidget {
                                 color: rowColor,
                                 child: ListTile(
                                   contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 15),
+                                      vertical: 10, horizontal: 10),
                                   leading: ClipRRect(
                                     borderRadius: BorderRadius.circular(10.0),
-                                    child: SvgPicture.asset(
-                                      "assets/icons/document.svg",
-                                      width: 40,
-                                      height: 40,
+                                    child: Image.asset(
+                                      "assets/images/cfl_logo.png",
+                                      width: 70,
+                                      height: 70,
                                     ),
                                   ),
                                   title: Text(
