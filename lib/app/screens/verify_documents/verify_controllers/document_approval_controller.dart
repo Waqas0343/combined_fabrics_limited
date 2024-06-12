@@ -10,9 +10,11 @@ import 'package:path_provider/path_provider.dart';
 import '../../../../app_assets/styles/strings/app_constants.dart';
 import '../../../server/api_fetch.dart';
 import '../../../services/preferences.dart';
+import '../../home/home_controller.dart';
 import '../verify_models/next_levels_users.dart';
 import '../verify_models/pending_documents_model.dart';
 import '../verify_models/update_app_level.dart';
+import 'p_o_pending_list_controller.dart';
 
 class DocumentApprovalController extends GetxController {
   var statusOptions = ['approved', 'rejected'].obs;
@@ -36,6 +38,7 @@ class DocumentApprovalController extends GetxController {
   var pages = 0.obs;
   var isReady = false.obs;
   String? appName;
+  int? appID;
 
   @override
   void onInit() {
@@ -43,6 +46,7 @@ class DocumentApprovalController extends GetxController {
     final arguments = Get.arguments as Map<String, dynamic>;
     pendingDocumentsListModel = arguments['docItem'];
     appName = arguments['AppName'];
+    appID = arguments['AppID'];
     getNextLevelUsers(pendingDocumentsListModel.applogid);
     getBelowLevelUsers(pendingDocumentsListModel.applogid);
     fetchPdfUrl(
@@ -150,7 +154,9 @@ class DocumentApprovalController extends GetxController {
       isLoading(false);
       Get.snackbar('Success', 'Document updated successfully.',
           snackPosition: SnackPosition.BOTTOM);
-      Get.close(3);
+      Get.close(1);
+      Get.find<POPendingDocumentsController>().getDashboardAppList(appID);
+      Get.find<HomeController>().getUserMenu();
     } catch (e) {
       isLoading(false);
       Get.snackbar('Error', 'Something went wrong try again $e',

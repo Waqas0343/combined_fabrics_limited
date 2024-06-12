@@ -22,7 +22,7 @@ class RowingQualityEndLineController extends GetxController {
   String employeeName = Get.find<Preferences>().getString(Keys.userId) ?? "";
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final DateFormat dateFormat = DateFormat(Keys.dateFormat);
-  RxString selectedRadioValue = 'EndLine'.obs;
+  RxString selectedRadioValue = 'QMP'.obs;
   List<String> inspectionType = ["EndLine", "QMP"];
   final RxBool buttonAction = RxBool(true);
   DateTime dateTime = DateTime.now();

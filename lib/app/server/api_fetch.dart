@@ -4397,11 +4397,11 @@ class ApiFetch extends getx.GetxService {
       Debug.log(response.data.toString());
       try {
         final keysResponse = PendingDocumentsModel.fromJson(response.data);
-        Get.snackbar(
-          "Message",
-          keysResponse.message,
-          snackPosition: SnackPosition.BOTTOM,
-        );
+        // Get.snackbar(
+        //   "Message",
+        //   keysResponse.message,
+        //   snackPosition: SnackPosition.BOTTOM,
+        // );
         documentVerifyAppList = keysResponse.lists;
       } catch (e, s) {
         Debug.log(e);
@@ -4439,11 +4439,11 @@ class ApiFetch extends getx.GetxService {
       Debug.log(response.data.toString());
       try {
         final keysResponse = NextLevelUsersModel.fromJson(response.data);
-        Get.snackbar(
-          "Message",
-          keysResponse.message,
-          snackPosition: SnackPosition.BOTTOM,
-        );
+        // Get.snackbar(
+        //   "Message",
+        //   keysResponse.message,
+        //   snackPosition: SnackPosition.BOTTOM,
+        // );
         modelList = keysResponse.lists;
       } catch (e, s) {
         Debug.log(e);
@@ -4482,11 +4482,11 @@ class ApiFetch extends getx.GetxService {
       try {
         final keysResponse = NextLevelUsersModel.fromJson(response.data);
         if (keysResponse.lists.isNotEmpty) {
-          Get.snackbar(
-            "Message",
-            keysResponse.message,
-            snackPosition: SnackPosition.BOTTOM,
-          );
+          // Get.snackbar(
+          //   "Message",
+          //   keysResponse.message,
+          //   snackPosition: SnackPosition.BOTTOM,
+          // );
         }
 
         modelList = keysResponse.lists;
