@@ -50,50 +50,6 @@ class StockAdjustmentHomeScreen extends StatelessWidget {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Obx(
-                    () => OutlinedButton.icon(
-                      onPressed: () => controller.selectStartDate(context),
-                      icon: const Icon(Icons.date_range),
-                      label: Text(
-                        controller.startDate.value != null
-                            ? 'From: ${controller.dateFormat.format(controller.startDate.value!)}'
-                            : 'From: Select Date',
-                        style: Get.theme.textTheme.titleMedium,
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        side: const BorderSide(color: Colors.grey, width: 1),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Obx(
-                    () => OutlinedButton.icon(
-                      onPressed: () => controller.selectEndDate(context),
-                      icon: const Icon(Icons.date_range),
-                      label: Text(
-                        controller.endDate.value != null
-                            ? 'To: ${controller.dateFormat.format(controller.endDate.value!)}'
-                            : 'To: Select Date',
-                        style: Get.theme.textTheme.titleMedium,
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        side: const BorderSide(color: Colors.grey, width: 1),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
           Expanded(
             child: Obx(
               () => controller.isLoading.value

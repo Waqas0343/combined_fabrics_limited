@@ -44,7 +44,7 @@ class DocumentsAppCard extends StatelessWidget {
                     } else if (item.appname == "PO Close") {
                       icon = "assets/icons/close.svg";
                     }
-                    return ToolsWidget(
+                    return VerifyDocumentToolsWidget(
                       icon: icon,
                       cnt: item.documentCount,
                       title: item.appname,

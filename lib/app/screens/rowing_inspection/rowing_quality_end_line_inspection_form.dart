@@ -45,79 +45,39 @@ class EndLineInspection extends StatelessWidget {
                       () => Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: controller.inspectionType.map((String value) {
-                      if (controller.employeeDepartmentCode == '103') {
-                        if (value == 'QMP') {
-                          controller.selectedRadioValue.value = 'QMP';
-                          return Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 6.0),
-                              child: CustomCard(
-                                onPressed: () {
-                                  controller.selectOption(value);
-                                },
-                                child: Row(
-                                  children: [
-                                    Radio(
-                                      focusColor: Colors.white,
-                                      groupValue: controller.selectedRadioValue.value,
-                                      onChanged: (newValue) {
-                                        controller.selectOption(newValue.toString());
-                                      },
-                                      value: value,
-                                    ),
-                                    Text(
-                                      value,
-                                      style: Get.textTheme.bodySmall!.copyWith(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
+                      return Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 6.0),
+                          child: CustomCard(
+                            onPressed: () {
+                              controller.selectOption(value);
+                            },
+                            child: Row(
+                              children: [
+                                Radio(
+                                  focusColor: Colors.white,
+                                  groupValue: controller.selectedRadioValue.value,
+                                  onChanged: (newValue) {
+                                    controller.selectOption(newValue.toString());
+                                  },
+                                  value: value,
                                 ),
-                              ),
-                            ),
-                          );
-                        } else {
-                          return Container();
-                        }
-                      } else {
-                        if (value == 'EndLine') {
-                          return Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 6.0),
-                              child: CustomCard(
-                                onPressed: () {
-                                  controller.selectOption(value);
-                                },
-                                child: Row(
-                                  children: [
-                                    Radio(
-                                      focusColor: Colors.white,
-                                      groupValue: controller.selectedRadioValue.value,
-                                      onChanged: (newValue) {
-                                        controller.selectOption(newValue.toString());
-                                      },
-                                      value: value,
-                                    ),
-                                    Text(
-                                      value,
-                                      style: Get.textTheme.bodySmall!.copyWith(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
+                                Text(
+                                  value,
+                                  style: Get.textTheme.bodySmall!.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                          );
-                        } else {
-                          return Container();
-                        }
-                      }
+                          ),
+                        ),
+                      );
                     }).toList(),
                   ),
                 ),
+
                 const SizedBox(height: 14),
                 DropdownButtonFormField(
                   value: controller.selectedLinSection.value,

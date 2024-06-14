@@ -6,6 +6,7 @@ import '../../routes/app_routes.dart';
 import '../../screens/fabric_inspection/widget/table_shift_dialog_form.dart';
 import '../../screens/home/home_controller.dart';
 import '../../screens/home/model/get_menu_model.dart';
+import '../../screens/verify_documents/widgets/tools_widget.dart';
 import '../../services/preferences.dart';
 import '../home_tools/tools_widget.dart';
 
@@ -70,7 +71,7 @@ class HomeCard extends StatelessWidget {
                     Get.toNamed(AppRoutes.receivedComplaints);
                   };
                 } else if (menu.menuName == 'Complaint Dashboard') {
-                  iconData =  MyIcons.isComplain;
+                  iconData = MyIcons.isComplain;
                   onTap = () {
                     Get.toNamed(AppRoutes.complaintPortalHome);
                   };
@@ -84,28 +85,39 @@ class HomeCard extends StatelessWidget {
                   onTap = () {
                     Get.toNamed(AppRoutes.medicineDashboardScreen);
                   };
-                }
-                else if (menu.menuName == 'Document Approval') {
+                } else if (menu.menuName == 'Document Approval') {
                   iconData = MyIcons.isVerify;
                   onTap = () {
                     Get.toNamed(AppRoutes.verifyDocumentDashBoard);
                   };
-                }else if (menu.menuName == 'Make Complaints') {
+                } else if (menu.menuName == 'Make Complaints') {
                   iconData = MyIcons.isPaint;
                   onTap = () {
                     Get.toNamed(AppRoutes.createNewComplaint);
                   };
-                }else if (menu.menuName == 'Manage Complaints') {
+                } else if (menu.menuName == 'Manage Complaints') {
                   iconData = MyIcons.isComplain;
                   onTap = () {
-                    Get.toNamed(AppRoutes.receivedComplaints, );
+                    Get.toNamed(
+                      AppRoutes.receivedComplaints,
+                    );
                   };
                 }
-                return ToolsWidget(
-                  icon: iconData ?? "",
-                  title: menu.menuName,
-                  onTap: onTap,
-                );
+
+                if (menu.menuName == 'Document Approval') {
+                  return VerifyDocumentToolsWidget(
+                    icon: iconData ?? "",
+                    title: menu.menuName,
+                    onTap: onTap,
+                    cnt: controller.documentCount ?? 0,
+                  );
+                } else {
+                  return ToolsWidget(
+                    icon: iconData ?? "",
+                    title: menu.menuName,
+                    onTap: onTap,
+                  );
+                }
               },
             );
           },

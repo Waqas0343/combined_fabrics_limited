@@ -24,19 +24,13 @@ class POPendingDocumentsController extends GetxController {
 
   Map<String, List<PendingDocumentsListModel>> get filteredGroupedPendingDocuments {
     final query = searchQuery.value;
-    final start = startDate.value;
-    final end = endDate.value;
 
     return groupedPendingDocuments.map((key, value) {
       var filteredDocs = value.where((doc) {
         final matchesQuery = query.isEmpty ||
             doc.docnum.toString().contains(query) ||
             doc.lastuser.toString().contains(query);
-        final matchesStartDate = start == null ||
-            doc.createdDate.isAfter(start.subtract(const Duration(days: 1)));
-        final matchesEndDate = end == null ||
-            doc.createdDate.isBefore(end.add(const Duration(days: 1)));
-        return matchesQuery && matchesStartDate && matchesEndDate;
+        return matchesQuery;
       }).toList();
       filteredDocs.sort((a, b) => a.docnum.compareTo(b.docnum)); // Sort by docnum
       return MapEntry(key, filteredDocs);
@@ -77,34 +71,10 @@ class POPendingDocumentsController extends GetxController {
     }
   }
 
-  Future<void> selectStartDate(BuildContext context) async {
-    final selectedDate = await showDatePicker(
-      context: context,
-      initialDate: startDate.value ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-    if (selectedDate != null) {
-      startDate.value = selectedDate;
-    }
-  }
-
-  Future<void> selectEndDate(BuildContext context) async {
-    final selectedDate = await showDatePicker(
-      context: context,
-      initialDate: endDate.value ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-    if (selectedDate != null) {
-      endDate.value = selectedDate;
-    }
-  }
 
   void clearFilters() {
     searchQuery.value = '';
     searchController.clear();
-    startDate.value = null;
-    endDate.value = null;
+
   }
 }

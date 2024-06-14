@@ -14,6 +14,7 @@ import '../../home/home_controller.dart';
 import '../verify_models/next_levels_users.dart';
 import '../verify_models/pending_documents_model.dart';
 import '../verify_models/update_app_level.dart';
+import 'p_o_approve_screen_controller.dart';
 import 'p_o_pending_list_controller.dart';
 
 class DocumentApprovalController extends GetxController {
@@ -156,7 +157,9 @@ class DocumentApprovalController extends GetxController {
           snackPosition: SnackPosition.BOTTOM);
       Get.close(1);
       Get.find<POPendingDocumentsController>().getDashboardAppList(appID);
-      Get.find<HomeController>().getUserMenu();
+      Get.find<HomeController>().getCountAllDocs();
+      Get.find<POApproveHomeController>().dashboardAppList();
+
     } catch (e) {
       isLoading(false);
       Get.snackbar('Error', 'Something went wrong try again $e',

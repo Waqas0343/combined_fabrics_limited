@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class ToolsWidget extends StatelessWidget {
+class VerifyDocumentToolsWidget extends StatelessWidget {
   final String icon;
   final String title;
   final int cnt;
   final VoidCallback? onTap;
 
-  const ToolsWidget({
+  const VerifyDocumentToolsWidget({
     Key? key,
     required this.title,
     required this.cnt,

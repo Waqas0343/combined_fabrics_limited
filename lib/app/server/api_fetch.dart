@@ -4559,6 +4559,42 @@ class ApiFetch extends getx.GetxService {
     return pdfUrl;
   }
 
+
+  static Future<int?> getCountAllDocs(date) async {
+    Response response;
+    int? cnt;
+    try {
+      Debug.log(ServerConfig.getCountAllDocs + date);
+      String url = ServerConfig.getCountAllDocs + date;
+      String token = Get.find<Preferences>().getString(Keys.token) ?? "";
+
+      final headers = {
+        "Authorization": "Bearer $token",
+      };
+
+      response = await dio.get(
+        url,
+        options: Options(
+          headers: headers,
+        ),
+      );
+    } catch (e, s) {
+      Debug.log(e);
+      Debug.log(s);
+      return cnt;
+    }
+
+    if (response.statusCode == 200) {
+      try {
+        cnt = response.data['Data']['CNT'];
+      } catch (e, s) {
+        Debug.log(e);
+        Debug.log(s);
+      }
+    }
+    return cnt;
+  }
+
   static Future<List<DocumentHistoryList>?> getDocHistory(date) async {
     Response response;
     List<DocumentHistoryList>? modelList;

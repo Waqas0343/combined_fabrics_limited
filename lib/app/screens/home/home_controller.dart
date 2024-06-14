@@ -21,7 +21,7 @@ class HomeController extends GetxController {
   String token = Get.find<Preferences>().getString(Keys.token) ?? "";
   String employeeName = Get.find<Preferences>().getString(Keys.userId) ?? "";
   String? userDepartment = Get.find<Preferences>().getString(Keys.departmentCode);
-
+  int? documentCount;
   RxBool isBiometricEnabled = false.obs;
   final RxBool isLoading = true.obs;
 
@@ -34,6 +34,7 @@ class HomeController extends GetxController {
     checkBiometric();
     toggleBiometric;
     getUserMenu();
+    getCountAllDocs();
     getUserSubMenuList();
 
     super.onInit();
@@ -47,7 +48,12 @@ class HomeController extends GetxController {
       userMenuList.assignAll(responseList);
     }
   }
-
+  Future<void> getCountAllDocs() async {
+    isLoading(true);
+    String params = "userId=$employeeName";
+    documentCount = await ApiFetch.getCountAllDocs(params);
+    isLoading(false);
+    }
   Future<void> getUserSubMenuList() async {
     isLoading(true);
     String params = "MenuId=&UserId=$employeeName";
