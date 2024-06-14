@@ -33,8 +33,8 @@ class HomeController extends GetxController {
     // handleNotifications();
     checkBiometric();
     toggleBiometric;
-    getUserMenu();
     getCountAllDocs();
+    getUserMenu();
     getUserSubMenuList();
 
     super.onInit();
