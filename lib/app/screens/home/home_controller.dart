@@ -55,14 +55,14 @@ class HomeController extends GetxController {
     isLoading(false);
     }
   Future<void> getUserSubMenuList() async {
-    isLoading(true);
-    String params = "MenuId=&UserId=$employeeName";
-    List<SubMenuModelList>? responseList =
-        await ApiFetch.getSubMenuForUser(params);
-    isLoading(false);
-    if (responseList != null) {
-      userSubMenuList.assignAll(responseList);
-    }
+    // isLoading(true);
+    // String params = "MenuId=&UserId=$employeeName";
+    // List<SubMenuModelList>? responseList =
+    //     await ApiFetch.getSubMenuForUser(params);
+    // isLoading(false);
+    // if (responseList != null) {
+    //   userSubMenuList.assignAll(responseList);
+    // }
   }
 
   void checkBiometric() async {

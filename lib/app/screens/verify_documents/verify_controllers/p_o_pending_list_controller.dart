@@ -14,7 +14,7 @@ class POPendingDocumentsController extends GetxController {
   Rx<DateTime> dateTime = DateTime.now().obs;
   int? appID;
   String? appName;
-
+  int currentDocumentIndex = 0;
   final Map<String, List<PendingDocumentsListModel>> groupedPendingDocuments = {};
   final RxString searchQuery = ''.obs;
   final TextEditingController searchController = TextEditingController();

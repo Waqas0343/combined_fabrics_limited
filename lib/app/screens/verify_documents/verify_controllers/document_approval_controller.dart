@@ -32,22 +32,46 @@ class DocumentApprovalController extends GetxController {
 
   var selectedUser = Rx<NextLevelUsersListModel?>(null);
   var comments = ''.obs;
+
   late PendingDocumentsListModel pendingDocumentsListModel;
   final DateFormat dateFormat = DateFormat(Keys.dateFormat);
   Rx<DateTime> dateTime = DateTime.now().obs;
   var file; // Changed pdfUrl to file
   var pages = 0.obs;
   var isReady = false.obs;
+
   String? appName;
   int? appID;
+
+  late int currentDocumentIndex;
+  late List<PendingDocumentsListModel> pendingDocuments;
 
   @override
   void onInit() {
     super.onInit();
     final arguments = Get.arguments as Map<String, dynamic>;
-    pendingDocumentsListModel = arguments['docItem'];
-    appName = arguments['AppName'];
+    final groupedPendingDocuments =
+    arguments['groupedPendingDocuments'] as Map<String, List<PendingDocumentsListModel>>;
     appID = arguments['AppID'];
+    appName = arguments['AppName'];
+    currentDocumentIndex = arguments['currentDocumentIndex'];
+
+    // Initialize pendingDocuments with all documents from groupedPendingDocuments
+    pendingDocuments = [];
+
+    // Iterate through all users and collect all documents
+    groupedPendingDocuments.forEach((key, value) {
+      pendingDocuments.addAll(value);
+    });
+
+    fetchFunctions();
+  }
+
+
+
+  void fetchFunctions() {
+    Debug.log("currentDocumentIndex...............$currentDocumentIndex");
+    pendingDocumentsListModel = pendingDocuments[currentDocumentIndex];
     getNextLevelUsers(pendingDocumentsListModel.applogid);
     getBelowLevelUsers(pendingDocumentsListModel.applogid);
     fetchPdfUrl(
@@ -112,6 +136,7 @@ class DocumentApprovalController extends GetxController {
   Future<void> updateAppLevel() async {
     try {
       isLoading(true);
+
       // Determine if userId is required based on the lists and status
       bool isUserIdRequired =
           (status.value == 'approved' && approvedUsers.isNotEmpty) ||
@@ -120,42 +145,54 @@ class DocumentApprovalController extends GetxController {
       UpdateAppLevelModel? updateAppLevelModel;
       if (isUserIdRequired && selectedUser.value != null) {
         updateAppLevelModel = UpdateAppLevelModel(
-            appLogId: pendingDocumentsListModel.applogid,
-            userId: employeeName,
-            selectedUser: selectedUser.value!.userid,
-            status: status.value == 'approved' ? 1 : 0,
-            comments: comments.value,
-            rejectLevel:
-                status.value == 'approved' ? 4 : selectedUser.value!.authlevel,
-            domainUser: '',
-            loginUser: employeeName,
-            computerName: '',
-            ipAddress: '');
+          appLogId: pendingDocumentsListModel.applogid,
+          userId: employeeName,
+          selectedUser: selectedUser.value!.userid,
+          status: status.value == 'approved' ? 1 : 0,
+          comments: comments.value,
+          rejectLevel: status.value == 'approved' ? 4 : selectedUser.value!.authlevel,
+          domainUser: '',
+          loginUser: employeeName,
+          computerName: '',
+          ipAddress: '',
+        );
       } else if (!isUserIdRequired) {
         updateAppLevelModel = UpdateAppLevelModel(
-            appLogId: pendingDocumentsListModel.applogid,
-            userId: employeeName,
-            selectedUser: '',
-            status: status.value == 'approved' ? 1 : 0,
-            comments: comments.value,
-            rejectLevel:
-                status.value == 'approved' ? 4 : selectedUser.value!.authlevel,
-            domainUser: '',
-            loginUser: employeeName,
-            computerName: '',
-            ipAddress: '');
+          appLogId: pendingDocumentsListModel.applogid,
+          userId: employeeName,
+          selectedUser: '',
+          status: status.value == 'approved' ? 1 : 0,
+          comments: comments.value,
+          rejectLevel: status.value == 'approved' ? 4 : selectedUser.value!.authlevel,
+          domainUser: '',
+          loginUser: employeeName,
+          computerName: '',
+          ipAddress: '',
+        );
       }
 
       Debug.log("................${updateAppLevelModel!.appLogId}");
       Debug.log("json................${updateAppLevelModel.toJson()}");
 
-      isLoading(true);
-      await ApiFetch.updateAppLevel(updateAppLevelModel);
-      await updatePreferences();
+      // Simulate updateAppLevel API call with delay
+      // await ApiFetch.updateAppLevel(updateAppLevelModel);
+      // await updatePreferences();
+
       isLoading(false);
-      Get.snackbar('Success', 'Document updated successfully.',
-          snackPosition: SnackPosition.BOTTOM);
-      Get.close(1);
+
+      // Assuming currentDocumentIndex starts from 0 and increments for each document
+      currentDocumentIndex++;
+
+      // Check if there are more documents to process
+      if (currentDocumentIndex >= pendingDocuments.length) {
+        // No more documents, go to previous pages
+        Get.close(3); // Close three pages
+      } else {
+        // Fetch functions for the next document
+        fetchFunctions();
+      }
+
+      // Refresh other controllers
       Get.find<POPendingDocumentsController>().getDashboardAppList(appID);
       Get.find<HomeController>().getCountAllDocs();
       Get.find<POApproveHomeController>().dashboardAppList();
@@ -166,6 +203,8 @@ class DocumentApprovalController extends GetxController {
           snackPosition: SnackPosition.BOTTOM);
     }
   }
+
+
 
   Future<void> updatePreferences() async {
     // String appKey =
