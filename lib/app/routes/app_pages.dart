@@ -66,7 +66,7 @@ import '../screens/splash/splash_screen.dart';
 import '../screens/verify_documents/document_approval_screen.dart';
 import '../screens/verify_documents/document_history_screen.dart';
 import '../screens/verify_documents/full_screen_pdf_view.dart';
-import '../screens/verify_documents/stock_adjustment_screen.dart';
+import '../screens/verify_documents/pending_documents_screen.dart';
 import '../screens/verify_documents/verify_documents_DashBoard.dart';
 import 'app_routes.dart';
 
@@ -334,7 +334,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.stockAdjustmentScreen,
-      page: () => const StockAdjustmentHomeScreen(),
+      page: () => const PendingDocsScreen(),
     ),
     GetPage(
       name: AppRoutes.documentApprovalScreen,

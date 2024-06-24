@@ -6,22 +6,21 @@ import 'package:get/get.dart';
 
 import '../../home/home_controller.dart';
 
-class VerifyDocumentToolsWidget extends StatelessWidget {
+class VerifyDocumentHomePageToolsWidget extends StatelessWidget {
   final String icon;
   final String title;
-  final int cnt;
   final VoidCallback? onTap;
 
-  const VerifyDocumentToolsWidget({
+  const VerifyDocumentHomePageToolsWidget({
     Key? key,
     required this.title,
-    required this.cnt,
     required this.icon,
     this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final HomeController controller = Get.find<HomeController>();
     return LayoutBuilder(
       builder: (context, constraints) {
         final cardHeight = constraints.maxHeight;
@@ -64,23 +63,25 @@ class VerifyDocumentToolsWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              Positioned(
-                bottom: 3,
-                right: 4,
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Colors.orangeAccent,
-                  child: Text(
-                    "$cnt",
-                    style: Get.theme.textTheme.bodySmall?.copyWith(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+              Obx(() {
+                return Positioned(
+                  bottom: 3,
+                  right: 4,
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.orangeAccent,
+                    child: Text(
+                      "${controller.documentCount.value}",
+                      style: Get.theme.textTheme.bodySmall?.copyWith(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
                   ),
-                ),
-              ),
+                );
+              }),
             ],
           ),
         );

@@ -6,6 +6,7 @@ import '../../routes/app_routes.dart';
 import '../../screens/fabric_inspection/widget/table_shift_dialog_form.dart';
 import '../../screens/home/home_controller.dart';
 import '../../screens/home/model/get_menu_model.dart';
+import '../../screens/verify_documents/widgets/tools_home_widget.dart';
 import '../../screens/verify_documents/widgets/tools_widget.dart';
 import '../../services/preferences.dart';
 import '../home_tools/tools_widget.dart';
@@ -105,11 +106,10 @@ class HomeCard extends StatelessWidget {
                 }
 
                 if (menu.menuName == 'Document Approval') {
-                  return VerifyDocumentToolsWidget(
+                  return VerifyDocumentHomePageToolsWidget(
                     icon: iconData ?? "",
                     title: menu.menuName,
                     onTap: onTap,
-                    cnt: controller.documentCount ?? 0,
                   );
                 } else {
                   return ToolsWidget(

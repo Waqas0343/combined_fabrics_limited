@@ -2,17 +2,15 @@ import 'package:combined_fabrics_limited/app/app_widgets/custom_card.dart';
 import 'package:combined_fabrics_limited/app/screens/verify_documents/verify_controllers/p_o_pending_list_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../routes/app_routes.dart';
-import '../home/home_controller.dart';
 
-class StockAdjustmentHomeScreen extends StatelessWidget {
-  const StockAdjustmentHomeScreen({super.key});
+class PendingDocsScreen extends StatelessWidget {
+  const PendingDocsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final POPendingDocumentsController controller =
-        Get.put(POPendingDocumentsController());
+    final PendingDocumentsController controller =
+        Get.put(PendingDocumentsController());
 
     return Scaffold(
       appBar: AppBar(
@@ -51,6 +49,29 @@ class StockAdjustmentHomeScreen extends StatelessWidget {
               ],
             ),
           ),
+          if (controller.isDropDown)
+            Obx(() => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DropdownButton<String>(
+                    hint: Text(
+                      "Select User",
+                      style: Get.textTheme.titleSmall?.copyWith(
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                    value: controller.selectedUser.value,
+                    isExpanded: true,
+                    items: controller.userOptions.map((String user) {
+                      return DropdownMenuItem<String>(
+                        value: user,
+                        child: Text(user),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      controller.changeUser(newValue);
+                    },
+                  ),
+                )),
           Expanded(
             child: Obx(
               () => controller.isLoading.value
@@ -69,28 +90,28 @@ class StockAdjustmentHomeScreen extends StatelessWidget {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ListTile(
-                              isThreeLine: false,
-                              title: Text(
-                                "Assigned by $lastUser",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              leading: CircleAvatar(
-                                radius: 15,
-                                backgroundColor: Colors.orangeAccent,
-                                child: Text(
-                                  "${documents.length}",
-                                  style:
-                                      Get.theme.textTheme.bodySmall?.copyWith(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
+                            // ListTile(
+                            //   isThreeLine: false,
+                            //   title: Text(
+                            //     "Assigned by $lastUser",
+                            //     style: const TextStyle(
+                            //         fontWeight: FontWeight.bold),
+                            //   ),
+                            //   leading: CircleAvatar(
+                            //     radius: 15,
+                            //     backgroundColor: Colors.orangeAccent,
+                            //     child: Text(
+                            //       "${documents.length}",
+                            //       style:
+                            //           Get.theme.textTheme.bodySmall?.copyWith(
+                            //         color: Colors.white,
+                            //         fontSize: 12,
+                            //         fontWeight: FontWeight.bold,
+                            //       ),
+                            //       textAlign: TextAlign.center,
+                            //     ),
+                            //   ),
+                            // ),
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const ClampingScrollPhysics(),
@@ -111,13 +132,13 @@ class StockAdjustmentHomeScreen extends StatelessWidget {
                                         AppRoutes.documentApprovalScreen,
                                         arguments: {
                                           'currentDocumentIndex': index,
-                                          'groupedPendingDocuments': controller.filteredGroupedPendingDocuments, // Pass entire map
+                                          'groupedPendingDocuments': controller
+                                              .filteredGroupedPendingDocuments,
                                           'AppName': controller.appName,
                                           'AppID': controller.appID,
                                         },
                                       );
                                     },
-
                                     color: rowColor,
                                     child: ListTile(
                                       contentPadding:
@@ -134,14 +155,33 @@ class StockAdjustmentHomeScreen extends StatelessWidget {
                                       ),
                                       title: Text(
                                         item.docnum.toString(),
-                                        style: Get.textTheme.titleSmall
-                                            ?.copyWith(
+                                        style:
+                                            Get.textTheme.titleSmall?.copyWith(
                                           fontWeight: FontWeight.w600,
                                           color: Colors.black87,
                                         ),
                                       ),
-                                      subtitle: Text(
-                                          "Date: ${controller.dateFormat.format(item.createdDate)}"),
+                                      subtitle: RichText(
+                                        text: TextSpan(
+                                          text: controller.dateFormat
+                                              .format(item.createdDate),
+                                          style: const TextStyle(
+                                            color: Colors.black54,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                          ),
+                                          children: [
+                                            TextSpan(
+                                              text: '\n${item.lastuser}',
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                       trailing: const Icon(
                                         Icons.arrow_forward_ios_outlined,
                                         size: 16,

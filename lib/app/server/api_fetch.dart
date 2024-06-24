@@ -4498,6 +4498,51 @@ class ApiFetch extends getx.GetxService {
     return modelList;
   }
 
+  static Future<List<NextLevelUsersListModel>?> getSameLevelUsers(date) async {
+    Response response;
+    List<NextLevelUsersListModel>? modelList;
+    try {
+      Debug.log(ServerConfig.getSameLevelUsers + date);
+      String url = ServerConfig.getSameLevelUsers + date;
+      String token = Get.find<Preferences>().getString(Keys.token) ?? "";
+
+      final headers = {
+        "Authorization": "Bearer $token",
+      };
+
+      response = await dio.get(
+        url,
+        options: Options(
+          headers: headers,
+        ),
+      );
+    } catch (e, s) {
+      Debug.log(e);
+      Debug.log(s);
+      return modelList;
+    }
+
+    if (response.statusCode == 200) {
+      Debug.log(response.data.toString());
+      try {
+        final keysResponse = NextLevelUsersModel.fromJson(response.data);
+        if (keysResponse.lists.isNotEmpty) {
+          // Get.snackbar(
+          //   "Message",
+          //   keysResponse.message,
+          //   snackPosition: SnackPosition.BOTTOM,
+          // );
+        }
+
+        modelList = keysResponse.lists;
+      } catch (e, s) {
+        Debug.log(e);
+        Debug.log(s);
+      }
+    }
+    return modelList;
+  }
+
   static Future<void> updateAppLevel(UpdateAppLevelModel updateAppLevel) async {
     Response response;
     try {

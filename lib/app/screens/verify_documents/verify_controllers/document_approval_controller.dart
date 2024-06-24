@@ -50,8 +50,8 @@ class DocumentApprovalController extends GetxController {
   void onInit() {
     super.onInit();
     final arguments = Get.arguments as Map<String, dynamic>;
-    final groupedPendingDocuments =
-    arguments['groupedPendingDocuments'] as Map<String, List<PendingDocumentsListModel>>;
+    final groupedPendingDocuments = arguments['groupedPendingDocuments']
+        as Map<String, List<PendingDocumentsListModel>>;
     appID = arguments['AppID'];
     appName = arguments['AppName'];
     currentDocumentIndex = arguments['currentDocumentIndex'];
@@ -66,8 +66,6 @@ class DocumentApprovalController extends GetxController {
 
     fetchFunctions();
   }
-
-
 
   void fetchFunctions() {
     Debug.log("currentDocumentIndex...............$currentDocumentIndex");
@@ -150,7 +148,8 @@ class DocumentApprovalController extends GetxController {
           selectedUser: selectedUser.value!.userid,
           status: status.value == 'approved' ? 1 : 0,
           comments: comments.value,
-          rejectLevel: status.value == 'approved' ? 4 : selectedUser.value!.authlevel,
+          rejectLevel:
+              status.value == 'approved' ? 4 : selectedUser.value!.authlevel,
           domainUser: '',
           loginUser: employeeName,
           computerName: '',
@@ -163,7 +162,8 @@ class DocumentApprovalController extends GetxController {
           selectedUser: '',
           status: status.value == 'approved' ? 1 : 0,
           comments: comments.value,
-          rejectLevel: status.value == 'approved' ? 4 : selectedUser.value!.authlevel,
+          rejectLevel:
+              status.value == 'approved' ? 4 : selectedUser.value!.authlevel,
           domainUser: '',
           loginUser: employeeName,
           computerName: '',
@@ -175,8 +175,8 @@ class DocumentApprovalController extends GetxController {
       Debug.log("json................${updateAppLevelModel.toJson()}");
 
       // Simulate updateAppLevel API call with delay
-      // await ApiFetch.updateAppLevel(updateAppLevelModel);
-      // await updatePreferences();
+      await ApiFetch.updateAppLevel(updateAppLevelModel);
+      await updatePreferences();
 
       isLoading(false);
 
@@ -186,6 +186,7 @@ class DocumentApprovalController extends GetxController {
       // Check if there are more documents to process
       if (currentDocumentIndex >= pendingDocuments.length) {
         // No more documents, go to previous pages
+        Get.find<HomeController>().getCountAllDocs();
         Get.close(3); // Close three pages
       } else {
         // Fetch functions for the next document
@@ -193,7 +194,7 @@ class DocumentApprovalController extends GetxController {
       }
 
       // Refresh other controllers
-      Get.find<POPendingDocumentsController>().getDashboardAppList(appID);
+      Get.find<PendingDocumentsController>().getDashboardAppList(appID);
       Get.find<POApproveHomeController>().dashboardAppList();
 
     } catch (e) {
@@ -202,8 +203,6 @@ class DocumentApprovalController extends GetxController {
           snackPosition: SnackPosition.BOTTOM);
     }
   }
-
-
 
   Future<void> updatePreferences() async {
     // String appKey =

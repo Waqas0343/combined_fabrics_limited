@@ -19,14 +19,17 @@ class HomeController extends GetxController {
   final RxInt unreadChats = RxInt(0);
   final LocalAuthentication _localAuthentication = LocalAuthentication();
   String name = Get.find<Preferences>().getString(Keys.cmpType) ?? "Guest User";
-  String employeeCode = Get.find<Preferences>().getString(Keys.employeeCode) ?? "Guest User";
+  String employeeCode =
+      Get.find<Preferences>().getString(Keys.employeeCode) ?? "Guest User";
   String token = Get.find<Preferences>().getString(Keys.token) ?? "";
   String employeeName = Get.find<Preferences>().getString(Keys.userId) ?? "";
-  String? userDepartment = Get.find<Preferences>().getString(Keys.departmentCode);
-  int? documentCount;
+  String? userDepartment =
+      Get.find<Preferences>().getString(Keys.departmentCode);
+  RxInt documentCount = 0.obs;
   RxBool isBiometricEnabled = false.obs;
   final RxBool isLoading = true.obs;
   Timer? timer;
+
   @override
   void onInit() {
     Debug.log("Token $token");
@@ -36,20 +39,17 @@ class HomeController extends GetxController {
     checkBiometric();
     toggleBiometric;
     getCountAllDocs();
+    timer = Timer.periodic(const Duration(seconds: 5), (Timer t) async {
+      getCountAllDocs();
+    });
+
+
     getUserMenu();
     getUserSubMenuList();
-
-    // Call getCountAllDocs every 5 seconds
-    timer = Timer.periodic(const Duration(seconds: 5), (Timer t) => getCountAllDocs());
 
     super.onInit();
   }
 
-  @override
-  void onClose() {
-    timer?.cancel(); // Cancel the timer when the controller is closed
-    super.onClose();
-  }
   Future<void> getUserMenu() async {
     isLoading(true);
     String params = "UserId=$employeeName";
@@ -59,12 +59,14 @@ class HomeController extends GetxController {
       userMenuList.assignAll(responseList);
     }
   }
+
   Future<void> getCountAllDocs() async {
     isLoading(true);
     String params = "userId=$employeeName";
-    documentCount = await ApiFetch.getCountAllDocs(params);
+    documentCount.value = await ApiFetch.getCountAllDocs(params) ?? 0;
     isLoading(false);
-    }
+  }
+
   Future<void> getUserSubMenuList() async {
     // isLoading(true);
     // String params = "MenuId=&UserId=$employeeName";

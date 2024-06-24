@@ -152,6 +152,7 @@ class ServerConfig {
   static const getVerifyGetPendingDocsList = "${baseUrl}DocApprovel/GetPendingDocs?";
   static const getVerifyNextLevelUsersList = "${baseUrl}DocApprovel/GetNextLevelUsers?";
   static const getVerifyBelowLevelUsersList = "${baseUrl}DocApprovel/GetBelowLevelsUsers?";
+  static const getSameLevelUsers = "${baseUrl}DocApprovel/GetSameLevelUsers?";
   static const getVerifyUpdateAppLevel = "${baseUrl}DocApprovel/UpdateAppLevel";
   static const getVerifyGetFile = "${baseUrl}DocApprovel/GetFile?";
   static const  getCountAllDocs = "${baseUrl}DocApprovel/GetCountAllDocs?";
