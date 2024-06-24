@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:combined_fabrics_limited/app/debug/debug_pointer.dart';
 import 'package:combined_fabrics_limited/app/services/preferences.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +26,7 @@ class HomeController extends GetxController {
   int? documentCount;
   RxBool isBiometricEnabled = false.obs;
   final RxBool isLoading = true.obs;
-
+  Timer? timer;
   @override
   void onInit() {
     Debug.log("Token $token");
@@ -37,7 +39,16 @@ class HomeController extends GetxController {
     getUserMenu();
     getUserSubMenuList();
 
+    // Call getCountAllDocs every 5 seconds
+    timer = Timer.periodic(const Duration(seconds: 5), (Timer t) => getCountAllDocs());
+
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    timer?.cancel(); // Cancel the timer when the controller is closed
+    super.onClose();
   }
   Future<void> getUserMenu() async {
     isLoading(true);

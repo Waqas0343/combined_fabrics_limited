@@ -175,8 +175,8 @@ class DocumentApprovalController extends GetxController {
       Debug.log("json................${updateAppLevelModel.toJson()}");
 
       // Simulate updateAppLevel API call with delay
-      await ApiFetch.updateAppLevel(updateAppLevelModel);
-      await updatePreferences();
+      // await ApiFetch.updateAppLevel(updateAppLevelModel);
+      // await updatePreferences();
 
       isLoading(false);
 
@@ -194,7 +194,6 @@ class DocumentApprovalController extends GetxController {
 
       // Refresh other controllers
       Get.find<POPendingDocumentsController>().getDashboardAppList(appID);
-      Get.find<HomeController>().getCountAllDocs();
       Get.find<POApproveHomeController>().dashboardAppList();
 
     } catch (e) {
