@@ -175,8 +175,8 @@ class DocumentApprovalController extends GetxController {
       Debug.log("json................${updateAppLevelModel.toJson()}");
 
       // Simulate updateAppLevel API call with delay
-      await ApiFetch.updateAppLevel(updateAppLevelModel);
-      await updatePreferences();
+      // await ApiFetch.updateAppLevel(updateAppLevelModel);
+      // await updatePreferences();
 
       isLoading(false);
 
