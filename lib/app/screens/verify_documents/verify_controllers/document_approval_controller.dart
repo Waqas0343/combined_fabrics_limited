@@ -70,7 +70,9 @@ class DocumentApprovalController extends GetxController {
 
   void fetchFunctions() {
     Debug.log("currentDocumentIndex...............$currentDocumentIndex");
-
+    approvedUsers.clear();
+    rejectedUsers.clear();
+    selectedUser.value = null;
     for (var item in pendingDocuments) {
       if (currentDocumentIndex == item.docnum) {
         pendingDocumentsListModel = item;
@@ -185,24 +187,27 @@ class DocumentApprovalController extends GetxController {
       await ApiFetch.updateAppLevel(updateAppLevelModel);
       await updatePreferences();
 
-      isLoading(false);
 
-      // Assuming currentDocumentIndex starts from 0 and increments for each document
-      currentDocumentIndex++;
-      Get.close(3);
-      // // Check if there are more documents to process
-      // if (currentDocumentIndex >= pendingDocuments.length) {
-      //   // No more documents, go to previous pages
-      //   Get.find<HomeController>().getCountAllDocs();
-      //   Get.close(3); // Close three pages
-      // } else {
-      //   // Fetch functions for the next document
-      //   fetchFunctions();
-      // }
+      pendingDocuments.removeWhere((item) => item.docnum == currentDocumentIndex);
+
+      // Check if there are more documents to process
+      if (pendingDocuments.isEmpty) {
+        // No more documents, go to previous pages
+        Get.find<HomeController>().getCountAllDocs();
+        Get.close(3); // Close three pages
+      } else {
+        currentDocumentIndex = pendingDocuments[0].docnum;
+        Debug.log("...currentDocumentIndex...............$currentDocumentIndex");
+        // Fetch functions for the next document
+
+        fetchFunctions();
+      }
 
       // Refresh other controllers
       Get.find<PendingDocumentsController>().getDashboardAppList(appID);
       Get.find<POApproveHomeController>().dashboardAppList();
+
+      isLoading(false);
     } catch (e) {
       isLoading(false);
       Get.snackbar('Error', 'Something went wrong try again $e',
