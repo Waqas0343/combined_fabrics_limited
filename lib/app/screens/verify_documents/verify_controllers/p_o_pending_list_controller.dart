@@ -32,7 +32,8 @@ class PendingDocumentsController extends GetxController {
 
     return groupedPendingDocuments.map((key, value) {
       var filteredDocs = value.where((doc) {
-        var matchesUser = shouldFilterByUser
+        var matchesUser = true;
+         matchesUser = shouldFilterByUser
             ? selectedUser.value == 'Select User' ||
             doc.userid.toLowerCase() == selectedUser.value.toLowerCase()
             : true;
