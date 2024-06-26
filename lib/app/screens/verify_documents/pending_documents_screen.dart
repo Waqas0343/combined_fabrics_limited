@@ -116,22 +116,24 @@ class PendingDocsScreen extends StatelessWidget {
                               shrinkWrap: true,
                               physics: const ClampingScrollPhysics(),
                               itemCount: documents.length,
-                              itemBuilder: (context, index) {
-                                final item = documents[index];
+                              itemBuilder: (context, docIndex) {
+                                final item = documents[docIndex];
                                 List<Color> rowColors = [
                                   const Color(0xffe5f7f1),
                                   Colors.white
                                 ];
                                 Color rowColor =
-                                    rowColors[index % rowColors.length];
+                                    rowColors[docIndex % rowColors.length];
                                 return Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: CustomCard(
                                     onPressed: () {
+                                      print("index...1.............$index");
+                                      print("index...2.............$docIndex");
                                       Get.toNamed(
                                         AppRoutes.documentApprovalScreen,
                                         arguments: {
-                                          'currentDocumentIndex': index,
+                                          'currentDocumentIndex': item.docnum,
                                           'groupedPendingDocuments': controller
                                               .filteredGroupedPendingDocuments,
                                           'AppName': controller.appName,

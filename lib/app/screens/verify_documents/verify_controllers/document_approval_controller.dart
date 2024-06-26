@@ -63,13 +63,20 @@ class DocumentApprovalController extends GetxController {
     groupedPendingDocuments.forEach((key, value) {
       pendingDocuments.addAll(value);
     });
+    print("index...3.............$currentDocumentIndex");
 
     fetchFunctions();
   }
 
   void fetchFunctions() {
     Debug.log("currentDocumentIndex...............$currentDocumentIndex");
-    pendingDocumentsListModel = pendingDocuments[currentDocumentIndex];
+
+    for (var item in pendingDocuments) {
+      if (currentDocumentIndex == item.docnum) {
+        pendingDocumentsListModel = item;
+      }
+    }
+
     getNextLevelUsers(pendingDocumentsListModel.applogid);
     getBelowLevelUsers(pendingDocumentsListModel.applogid);
     fetchPdfUrl(
@@ -182,21 +189,20 @@ class DocumentApprovalController extends GetxController {
 
       // Assuming currentDocumentIndex starts from 0 and increments for each document
       currentDocumentIndex++;
-
-      // Check if there are more documents to process
-      if (currentDocumentIndex >= pendingDocuments.length) {
-        // No more documents, go to previous pages
-        Get.find<HomeController>().getCountAllDocs();
-        Get.close(3); // Close three pages
-      } else {
-        // Fetch functions for the next document
-        fetchFunctions();
-      }
+      Get.close(3);
+      // // Check if there are more documents to process
+      // if (currentDocumentIndex >= pendingDocuments.length) {
+      //   // No more documents, go to previous pages
+      //   Get.find<HomeController>().getCountAllDocs();
+      //   Get.close(3); // Close three pages
+      // } else {
+      //   // Fetch functions for the next document
+      //   fetchFunctions();
+      // }
 
       // Refresh other controllers
       Get.find<PendingDocumentsController>().getDashboardAppList(appID);
       Get.find<POApproveHomeController>().dashboardAppList();
-
     } catch (e) {
       isLoading(false);
       Get.snackbar('Error', 'Something went wrong try again $e',
