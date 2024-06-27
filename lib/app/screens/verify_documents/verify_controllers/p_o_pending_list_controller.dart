@@ -7,6 +7,7 @@ import '../../../server/api_fetch.dart';
 import '../../../services/preferences.dart';
 import '../verify_models/next_levels_users.dart';
 import '../verify_models/pending_documents_model.dart';
+
 class PendingDocumentsController extends GetxController {
   final RxBool isLoading = true.obs;
   String employeeName = Get.find<Preferences>().getString(Keys.userId) ?? "";
@@ -16,7 +17,8 @@ class PendingDocumentsController extends GetxController {
   bool isDropDown = false;
   String? appName;
   int currentDocumentIndex = 0;
-  final RxMap<String, List<PendingDocumentsListModel>> groupedPendingDocuments = <String, List<PendingDocumentsListModel>>{}.obs;
+  final RxMap<String, List<PendingDocumentsListModel>> groupedPendingDocuments =
+      <String, List<PendingDocumentsListModel>>{}.obs;
   final RxString searchQuery = ''.obs;
   final TextEditingController searchController = TextEditingController();
 
@@ -26,17 +28,20 @@ class PendingDocumentsController extends GetxController {
   final RxString selectedUser = 'Select User'.obs;
   final RxList<String> userOptions = RxList<String>();
 
-  Map<String, List<PendingDocumentsListModel>> get filteredGroupedPendingDocuments {
+  Map<String, List<PendingDocumentsListModel>>
+      get filteredGroupedPendingDocuments {
     final query = searchQuery.value;
     final bool shouldFilterByUser = appID == 6;
 
     return groupedPendingDocuments.map((key, value) {
       var filteredDocs = value.where((doc) {
         var matchesUser = true;
-         matchesUser = shouldFilterByUser
-            ? selectedUser.value == 'Select User' ||
-            doc.userid.toLowerCase() == selectedUser.value.toLowerCase()
-            : true;
+        if(doc.sign10!=null){
+          matchesUser = shouldFilterByUser
+              ? selectedUser.value == 'Select User' ||
+              doc.sign10!.toLowerCase() == selectedUser.value.toLowerCase()
+              : true;
+        }
 
         final matchesQuery = query.isEmpty ||
             doc.docnum.toString().contains(query) ||
@@ -44,10 +49,12 @@ class PendingDocumentsController extends GetxController {
         return matchesUser && matchesQuery;
       }).toList();
 
-      filteredDocs.sort((a, b) => a.docnum.compareTo(b.docnum)); // Sort by docnum
+      filteredDocs
+          .sort((a, b) => a.docnum.compareTo(b.docnum)); // Sort by docnum
 
       return MapEntry(key, filteredDocs);
-    })..removeWhere((key, value) => value.isEmpty);
+    })
+      ..removeWhere((key, value) => value.isEmpty);
   }
 
   @override
@@ -71,7 +78,7 @@ class PendingDocumentsController extends GetxController {
     isLoading(true);
     groupedPendingDocuments.clear();
     List<PendingDocumentsListModel>? responseList =
-    await ApiFetch.getPendingDocsList(param);
+        await ApiFetch.getPendingDocsList(param);
     isLoading(false);
     if (responseList != null) {
       groupedPendingDocuments.clear(); // Clear previous data
@@ -94,9 +101,10 @@ class PendingDocumentsController extends GetxController {
     String param = "appId=$appId&level=$level";
     isLoading(true);
     List<NextLevelUsersListModel>? responseList =
-    await ApiFetch.getSameLevelUsers(param);
+        await ApiFetch.getSameLevelUsers(param);
 
     List<String> users = ['Select User']; // Initialize with default value
+
     for (var user in responseList!) {
       users.add(user.username.toLowerCase());
       Debug.log(user.username);
@@ -108,6 +116,7 @@ class PendingDocumentsController extends GetxController {
 
   void changeUser(String? newUser) {
     selectedUser.value = newUser!;
+    Debug.log("changeUser........... ${selectedUser.value}");
     // Trigger an update to apply the new filter
     searchQuery.refresh();
     update();
