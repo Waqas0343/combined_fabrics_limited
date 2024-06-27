@@ -63,52 +63,70 @@ class FabricInspectionFaultsController extends GetxController {
     if (rollsModel.value == null) {
       return false;
     }
-    isLoading.value = true;
-    List<FaultsListModel> faultsToSave =
-        faultsList.where((fault) => fault.faultCount.value > 0).toList();
-
-    if (faultsToSave.isEmpty) {
-      isLoading.value = false;
-      Get.snackbar(
-        "No Faults Selected",
-        "Please select at least one fault.",
-        snackPosition: SnackPosition.BOTTOM,
-      );
+    if (isLoading.value) {
       return false;
     }
-    List<Map<String, dynamic>> payload = faultsToSave.map((fault) {
-      return {
-        "RollNo": rollsModel.value?.rollNo,
-        "RollCategory": rollsModel.value?.rollCat ?? '',
-        "FaultCode": fault.faultCode,
-        "FaultsCount": fault.faultCount.value,
-        "RpStatus": rpStatus,
-      };
-    }).toList();
-    bool success = await ApiFetch.saveFaults(payload);
-    isLoading.value = false;
-    if (success) {
-      Get.snackbar(
-        "Message",
-        'Your Data Saved Successfully!',
-        snackPosition: SnackPosition.TOP,
-      );
+
+    isLoading.value = true;
+    try {
+      List<FaultsListModel> faultsToSave =
+      faultsList.where((fault) => fault.faultCount.value > 0).toList();
+
+      if (faultsToSave.isEmpty) {
+        isLoading.value = false;
+        Get.snackbar(
+          "No Faults Selected",
+          "Please select at least one fault.",
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        return false;
+      }
+
+      List<Map<String, dynamic>> payload = faultsToSave.map((fault) {
+        return {
+          "RollNo": rollsModel.value?.rollNo,
+          "RollCategory": rollsModel.value?.rollCat ?? '',
+          "FaultCode": fault.faultCode,
+          "FaultsCount": fault.faultCount.value,
+          "RpStatus": rpStatus,
+        };
+      }).toList();
+
+      bool success = await ApiFetch.saveFaults(payload);
+      isLoading.value = false;
+
+      if (success) {
+        Get.snackbar(
+          "Message",
+          'Your Data Saved Successfully!',
+          snackPosition: SnackPosition.TOP,
+        );
+        Get.toNamed(
+          AppRoutes.fabricFaultFormScreen,
+          arguments: {
+            'lotNo': lotNoParam,
+            'color': colorParam,
+            'fabric': fabricParam,
+            'work order': workOrder,
+            'rpStatus': rpStatus,
+            'DiaGG': diaGG,
+            'rolls': rolls,
+            'kg': kgs,
+            'EcruKgs': ecruKgs,
+            'model': rollsModel.value,
+          },
+        );
+      } else {
+        Get.snackbar(
+          "Alert!",
+          "Faults Not Saved!",
+          snackPosition: SnackPosition.TOP,
+        );
+      }
+
+      return success;
+    } finally {
+      isLoading.value = false;
     }
-    Get.toNamed(
-      AppRoutes.fabricFaultFormScreen,
-      arguments: {
-        'lotNo': lotNoParam,
-        'color': colorParam,
-        'fabric': fabricParam,
-        'work order': workOrder,
-        'rpStatus': rpStatus,
-        'DiaGG': diaGG,
-        'rolls': rolls,
-        'kg': kgs,
-        'EcruKgs': ecruKgs,
-        'model': rollsModel.value,
-      },
-    );
-    return success;
   }
 }
