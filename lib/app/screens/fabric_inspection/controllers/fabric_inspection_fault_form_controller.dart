@@ -52,6 +52,7 @@ class FabricInspectionFormController extends GetxController {
   String? rpStatus;
   String? diaGG;
   int? rolls;
+  int? lotSrNo;
   String? kgs;
   String? ecruKgs;
 
@@ -66,6 +67,7 @@ class FabricInspectionFormController extends GetxController {
     workOrder = arguments['work order'];
     diaGG = arguments['DiaGG'];
     rolls = arguments['rolls'];
+    lotSrNo = arguments['LotSrno'];
     kgs = arguments['kg'];
     ecruKgs = arguments['EcruKgs'];
     if (!["M1", "M2", "M3", "M4", "M5","M6","M7","M8"].contains(table)) {
@@ -83,8 +85,7 @@ class FabricInspectionFormController extends GetxController {
 
   Future<void> getRollDetail() async {
     isLoading.value = true;
-    String params =
-        "RollNo=${rollsModel.value?.rollNo}&RollCat=${rollsModel.value?.rollCat}&RpStatus=$rpStatus";
+    String params = "RollNo=${rollsModel.value?.rollNo}&RollCat=${rollsModel.value?.rollCat}&RpStatus=$rpStatus";
     RollDetailModelData? rollData = await ApiFetch.getDetailByRoll(params);
     Debug.log(rollData);
     isLoading.value = false;
@@ -142,10 +143,8 @@ class FabricInspectionFormController extends GetxController {
       textConfirm: 'Yes',
       textCancel: 'No',
       onConfirm: () async {
-        double minValue = measurementList
-            .reduce((value, element) => value < element ? value : element);
-        double maxValue = measurementList
-            .reduce((value, element) => value > element ? value : element);
+        double minValue = measurementList.reduce((value, element) => value < element ? value : element);
+        double maxValue = measurementList.reduce((value, element) => value > element ? value : element);
         Get.dialog(const LoadingSpinner()); // Display loading spinner
         Debug.log(selectedMarkingRoll.value?.display);
         Map<String, dynamic> data = {
@@ -163,8 +162,7 @@ class FabricInspectionFormController extends GetxController {
           "Width3": measurementList.length > 2 ? measurementList[2] : 0,
           "Width4": measurementList.length > 3 ? measurementList[3] : 0,
           "Gsm": gsmController.text,
-          "Remarks":
-              remarksController.text.isNotEmpty ? remarksController.text : "",
+          "Remarks": remarksController.text.isNotEmpty ? remarksController.text : "",
           "InspectionShift": shift,
           "InspectedByCode": employeeCode,
           "InspectionTableNo": table,
@@ -183,6 +181,7 @@ class FabricInspectionFormController extends GetxController {
           "ShadeContinuity": isShadeChecked.value,
           "StartTime": dateTime,
           "EndTime": " ",
+          "LotSrno": lotSrNo
         };
 
         bool success = await ApiFetch.saveFaultsFormData(data);

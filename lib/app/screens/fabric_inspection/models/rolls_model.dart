@@ -64,6 +64,7 @@ class RollsListModel {
   String? rpStatus;
   String? inspectedBy;
   String? inspStatus;
+  int lotSrNo;
 
   RollsListModel({
     required this.rollNo,
@@ -78,6 +79,7 @@ class RollsListModel {
     this.rpStatus,
     required this.inspectedBy,
     required this.inspStatus,
+    required this.lotSrNo,
   });
 
   factory RollsListModel.fromJson(Map<String, dynamic> json) => RollsListModel(
@@ -93,6 +95,7 @@ class RollsListModel {
         rpStatus: json["RPStatus"],
         inspectedBy: json["InspectedBy"],
         inspStatus: json["InspStatus"],
+        lotSrNo: json["LotSrNo"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -108,5 +111,6 @@ class RollsListModel {
         "RPStatus": rpStatus,
         "InspectedBy": inspectedBy,
         "InspStatus": inspStatus,
+        "LotSrNo": lotSrNo,
       };
 }

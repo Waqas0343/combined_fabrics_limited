@@ -585,8 +585,7 @@ class InLineInspectorActivityDetail extends StatelessWidget {
                 // Add some spacing between buttons
                 ElevatedButton.icon(
                   onPressed: () async {
-                    final pdf = await controller.generatePdf(
-                        PdfPageFormat.a4, controller.inspectorList);
+                    final pdf = await controller.generatePdf(PdfPageFormat.a4, controller.inspectorList);
                     await controller.previewPdf(pdf);
                   },
                   icon: const Icon(Icons.preview),

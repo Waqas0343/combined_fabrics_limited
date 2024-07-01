@@ -210,7 +210,7 @@ class InLineInspectorActivityController extends GetxController {
   }
   ///todo: preview the PDF report
   Future<void> previewPdf(Uint8List pdfData) async {
-    await Printing.sharePdf(bytes: pdfData, filename: 'your_pdf_filename.pdf');
+    await Printing.sharePdf(bytes: pdfData, filename: 'Inspector Activity Report.pdf');
   }
 
 /// Todo: Export File Into Excel

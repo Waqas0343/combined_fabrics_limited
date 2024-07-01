@@ -21,6 +21,8 @@ class FabricInspectionFaultsController extends GetxController {
   String? workOrder;
   String? diaGG;
   int? rolls;
+  int? lotSrNo;
+
   String? kgs;
   String? ecruKgs;
   String? table = Get.find<Preferences>().getString(Keys.inspectionTable);
@@ -38,6 +40,7 @@ class FabricInspectionFaultsController extends GetxController {
     rpStatus = arguments['rpStatus'];
     diaGG = arguments['DiaGG'];
     rolls = arguments['rolls'];
+    lotSrNo = arguments['LotSrNo'];
     kgs = arguments['kg'];
     ecruKgs = arguments['EcruKgs'];
     expireDate ??= DateTime.now();
@@ -89,6 +92,8 @@ class FabricInspectionFaultsController extends GetxController {
           "FaultCode": fault.faultCode,
           "FaultsCount": fault.faultCount.value,
           "RpStatus": rpStatus,
+          "Lotno": lotNoParam,
+          "LotSrno": lotSrNo
         };
       }).toList();
 
@@ -112,6 +117,7 @@ class FabricInspectionFaultsController extends GetxController {
             'DiaGG': diaGG,
             'rolls': rolls,
             'kg': kgs,
+            "LotSrno": lotSrNo,
             'EcruKgs': ecruKgs,
             'model': rollsModel.value,
           },

@@ -54,6 +54,7 @@ class FabricInspectionListController extends GetxController {
     Debug.log(fabricParam);
     Debug.log(colorParam);
     Debug.log(lotNoParam);
+    Debug.log(lotNoParam);
     String lotNoEncoded = Uri.encodeComponent(lotNoParam);
     String colorEncoded = Uri.encodeComponent(colorParam!);
     String fabricEncoded = Uri.encodeComponent(fabricParam!);

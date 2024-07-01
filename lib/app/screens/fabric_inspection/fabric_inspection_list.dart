@@ -3,6 +3,7 @@ import 'package:combined_fabrics_limited/app_assets/styles/my_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../app_assets/app_theme_info.dart';
+import '../../debug/debug_pointer.dart';
 import '../../routes/app_routes.dart';
 import 'controllers/fabric_inspection_list_controller.dart';
 import 'models/rolls_model.dart';
@@ -424,18 +425,19 @@ class FabricInspectionListScreen extends StatelessWidget {
                                       ],
                                       onSelectChanged: (isSelected) {
                                         if (isSelected != null && isSelected) {
+                                          Debug.log(rollsModel.lotSrNo);
                                           Get.toNamed(
                                             AppRoutes.fabricInspectionFaults,
                                             arguments: {
                                               'lotNo': controller.lotNoParam,
                                               'color': controller.colorParam,
                                               'fabric': controller.fabricParam,
-                                              'work order':
-                                                  controller.workOrder,
+                                              'work order': controller.workOrder,
                                               'rpStatus': controller.rpStatus,
                                               'DiaGG': controller.diaGG,
                                               'rolls': controller.rolls,
                                               'kg': controller.kgs,
+                                              "LotSrNo": rollsModel.lotSrNo,
                                               'EcruKgs': controller.ecruKgs,
                                               'model': rollsModel,
                                             },
@@ -617,6 +619,7 @@ class FabricInspectionListScreen extends StatelessWidget {
                                       ],
                                       onSelectChanged: (isSelected) {
                                         if (isSelected != null && isSelected) {
+                                          Debug.log(rollsModel.lotSrNo);
                                           Get.toNamed(
                                             AppRoutes.fabricInspectionFaults,
                                             arguments: {
@@ -625,7 +628,8 @@ class FabricInspectionListScreen extends StatelessWidget {
                                               'fabric': controller.fabricParam,
                                               'work order': controller.workOrder,
                                               'rpStatus': controller.rpStatus,
-                                              'model': rollsModel,
+                                               "LotSrNo": rollsModel.lotSrNo,
+                                               'model': rollsModel,
                                             },
                                           );
                                         }

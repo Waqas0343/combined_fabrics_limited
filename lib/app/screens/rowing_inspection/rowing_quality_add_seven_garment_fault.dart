@@ -460,16 +460,15 @@ class InLineInspectionFaultScreen extends StatelessWidget {
                                           child: ElevatedButton(
                                             onPressed: () {
                                               Get.until((route) => Get.isDialogOpen == false);
-
                                               // Your existing logic after closing the dialogs
                                               controller.garmentFaults[index]['fault'] = controller.selectedFaults;
                                               int totalQuantity = controller.selectedFaults.isNotEmpty
-                                                  ? controller.selectedFaults.fold<int>(0, (sum, fault) => sum + fault.quantity.value) : 0;
+                                                  ? controller.selectedFaults.fold<int>(0, (sum, fault) => sum + fault.quantity.value)
+                                                  : 0;
                                               controller.garmentFaults[index]['quantity'] = totalQuantity;
                                               controller.totalFaultsAdded += totalQuantity;
                                               String selectedFaultType;
-                                              if (controller.selectedFaults.isNotEmpty &&
-                                                  controller.selectedFaults[0].dftLongname == 'Both') {
+                                              if (controller.selectedFaults.isNotEmpty && controller.selectedFaults[0].dftLongname == 'Both') {
                                                 selectedFaultType = controller.selectedFaultType.value;
                                               } else {
                                                 selectedFaultType = controller.selectedFaults.isNotEmpty
@@ -477,19 +476,14 @@ class InLineInspectionFaultScreen extends StatelessWidget {
                                                     : '';
                                               }
                                               controller.garmentFaults[index]['type'] = selectedFaultType;
-
                                               controller.saveRowingQualityFaultDetail(index);
-
                                               List<Map<String, dynamic>>garmentFaultDetails = controller.garmentFaults.map((garment) {
                                                 final dynamic faultData = garment['fault'];
                                                 final List<RowingQualityFaultListModel>
-                                                    faultList =
-                                                    faultData is List<RowingQualityFaultListModel> ? faultData : [];
-                                                final String faultType =
-                                                    garment['type'] is String ? garment['type'] : '';
+                                                faultList = faultData is List<RowingQualityFaultListModel> ? faultData : [];
+                                                final String faultType = garment['type'] is String ? garment['type'] : '';
                                                 final int faultCount = faultList.length;
-                                                final int defectCount =
-                                                    faultList.where((fault) => fault.dftLongname == 'Defect').length;
+                                                final int defectCount = faultList.where((fault) => fault.dftLongname == 'Defect').length;
                                                 return {
                                                   'type': faultType,
                                                   'faultCount': faultCount,
@@ -534,10 +528,10 @@ class InLineInspectionFaultScreen extends StatelessWidget {
                               onPressed: () {
                                 controller.garmentFaults[index]['fault'] = controller.selectedFaults;
                                 int totalQuantity =
-                                    controller.selectedFaults.isNotEmpty ? controller.selectedFaults.fold<int>(0, (sum, fault) => sum + fault.quantity.value) : 0;
+                                    controller.selectedFaults.isNotEmpty ? controller.selectedFaults.fold<int>(0, (sum, fault) => sum + fault.quantity.value)
+                                        : 0;
                                 controller.garmentFaults[index]['quantity'] = totalQuantity;
                                 controller.totalFaultsAdded += totalQuantity;
-
                                 String selectedFaultType;
                                 if (controller.selectedFaults.isNotEmpty && controller.selectedFaults[0].dftLongname == 'Both') {
                                   selectedFaultType = controller.selectedFaultType.value;
@@ -547,7 +541,6 @@ class InLineInspectionFaultScreen extends StatelessWidget {
                                       : '';
                                 }
                                 controller.garmentFaults[index]['type'] = selectedFaultType;
-
                                 controller.saveRowingQualityFaultDetail(index);
 
                                 List<Map<String, dynamic>> garmentFaultDetails = controller.garmentFaults.map((garment) {
