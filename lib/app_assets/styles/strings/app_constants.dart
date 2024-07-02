@@ -32,7 +32,7 @@ class Keys {
   static const String dateFormat = "dd-MMM-yyyy";
   // static const String timeFormat = "hh:mm a";
   static const String timeFormat = "HH:mm";
-  static const String versionNo = "2.7.0";
+  static const String versionNo = "2.8.0";
   static const String flagDashBoardTime = "flagDashBoardTime";
   static const String autoFilter = "autoFilter";
 }

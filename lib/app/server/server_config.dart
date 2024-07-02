@@ -157,6 +157,8 @@ class ServerConfig {
   static const getVerifyGetFile = "${baseUrl}DocApprovel/GetFile?";
   static const  getCountAllDocs = "${baseUrl}DocApprovel/GetCountAllDocs?";
   static const getDocHistory = "${baseUrl}DocApprovel/GetDocHistory?";
+  static const getDocsTrackList = "${baseUrl}DocApprovel/GetDocsTrackList?";
+  static const getDocsTrackSearchList = "${baseUrl}DocApprovel/GetDocsTrackSearchList?";
 
 
 }

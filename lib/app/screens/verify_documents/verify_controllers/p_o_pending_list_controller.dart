@@ -25,7 +25,7 @@ class PendingDocumentsController extends GetxController {
   final Rx<DateTime?> startDate = Rx<DateTime?>(null);
   final Rx<DateTime?> endDate = Rx<DateTime?>(null);
 
-  final RxString selectedUser = 'Select User'.obs;
+  final RxString selectedUser = 'All'.obs;
   final RxList<String> userOptions = RxList<String>();
 
   Map<String, List<PendingDocumentsListModel>>
@@ -38,7 +38,7 @@ class PendingDocumentsController extends GetxController {
         var matchesUser = true;
         if(doc.sign10!=null){
           matchesUser = shouldFilterByUser
-              ? selectedUser.value == 'Select User' ||
+              ? selectedUser.value == 'All' ||
               doc.sign10!.toLowerCase() == selectedUser.value.toLowerCase()
               : true;
         }
@@ -62,6 +62,7 @@ class PendingDocumentsController extends GetxController {
     final arguments = Get.arguments as Map<String, dynamic>;
     appID = arguments['AppID'];
     appName = arguments['AppName'];
+    selectedUser.value = employeeName;
     Debug.log('-----------------------------$appID');
     getDashboardAppList(appID);
     if (appID == 6 &&
@@ -103,7 +104,7 @@ class PendingDocumentsController extends GetxController {
     List<NextLevelUsersListModel>? responseList =
         await ApiFetch.getSameLevelUsers(param);
 
-    List<String> users = ['Select User']; // Initialize with default value
+    List<String> users = ['All']; // Initialize with default value
 
     for (var user in responseList!) {
       users.add(user.username.toLowerCase());

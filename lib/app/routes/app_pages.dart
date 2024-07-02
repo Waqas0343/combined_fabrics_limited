@@ -65,6 +65,7 @@ import '../screens/rowing_inspection/rowing_quality_scan_rfid_for_end_line.dart'
 import '../screens/splash/splash_screen.dart';
 import '../screens/verify_documents/document_approval_screen.dart';
 import '../screens/verify_documents/document_history_screen.dart';
+import '../screens/verify_documents/document_track.dart';
 import '../screens/verify_documents/full_screen_pdf_view.dart';
 import '../screens/verify_documents/pending_documents_screen.dart';
 import '../screens/verify_documents/verify_documents_DashBoard.dart';
@@ -347,6 +348,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.documentHistoryTimelinePage,
       page: () => const DocumentHistoryTimelinePage(),
+    ),
+    GetPage(
+      name: AppRoutes.documentTrack,
+      page: () => const DocumentTrack(),
     ),
   ];
 }

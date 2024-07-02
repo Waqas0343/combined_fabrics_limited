@@ -74,4 +74,5 @@ class AppRoutes {
   static const String documentApprovalScreen = "/document_approval_screen";
   static const String fullScreenPdfView = "/full_screen_pdf_view";
   static const String documentHistoryTimelinePage = "/document_history_screen";
+  static const String documentTrack = "/document_track";
 }

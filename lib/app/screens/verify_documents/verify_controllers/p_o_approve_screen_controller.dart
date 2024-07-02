@@ -29,16 +29,37 @@ class POApproveHomeController extends GetxController {
     isLoading(false);
     if (responseList != null) {
       dashboardAppList.assignAll(responseList);
+      dashboardAppList.add(DocumentVerifyAppListModel(
+        appid: 99999,
+        appname: "Document Track",
+        parentappid: 0,
+        documentCount: 3,
+        cspid: "",
+        apptable: "",
+        reportpath: "",
+        apppk: "",
+        reportpara: "",
+        reportpara1: null,
+        apppk1: null,
+        reportpath1: null,
+        emails: null,
+        aprAlerts: false,
+        rejAlerts: false,
+        rejEmail: "",
+        priority: 0,
+      ));
     }
   }
 
   Future<void> nextScreen(DocumentVerifyAppListModel item) async {
-    if (item.documentCount > 0) {
-      Get.toNamed(AppRoutes.stockAdjustmentScreen,
-          arguments: {'AppID': item.appid, 'AppName': item.appname});
-    } else {
-      Get.snackbar('Info', 'There is no pending document',
-          snackPosition: SnackPosition.BOTTOM);
-    }
+    Get.toNamed(AppRoutes.stockAdjustmentScreen,
+        arguments: {'AppID': item.appid, 'AppName': item.appname});
+    // if (item.documentCount > 0) {
+    //   Get.toNamed(AppRoutes.stockAdjustmentScreen,
+    //       arguments: {'AppID': item.appid, 'AppName': item.appname});
+    // } else {
+    //   Get.snackbar('Info', 'There is no pending document',
+    //       snackPosition: SnackPosition.BOTTOM);
+    // }
   }
 }

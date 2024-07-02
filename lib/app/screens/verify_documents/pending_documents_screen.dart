@@ -10,7 +10,7 @@ class PendingDocsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PendingDocumentsController controller =
-        Get.put(PendingDocumentsController());
+    Get.put(PendingDocumentsController());
 
     return Scaffold(
       appBar: AppBar(
@@ -50,7 +50,8 @@ class PendingDocsScreen extends StatelessWidget {
             ),
           ),
           if (controller.isDropDown)
-            Obx(() => Padding(
+            Obx(() =>
+                Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: DropdownButton<String>(
                     hint: Text(
@@ -74,131 +75,143 @@ class PendingDocsScreen extends StatelessWidget {
                 )),
           Expanded(
             child: Obx(
-              () => controller.isLoading.value
+                  () =>
+              controller.isLoading.value
                   ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : ListView.builder(
-                      itemCount:
-                          controller.filteredGroupedPendingDocuments.length,
-                      itemBuilder: (context, index) {
-                        final lastUser = controller
-                            .filteredGroupedPendingDocuments.keys
-                            .toList()[index];
-                        final documents = controller
-                            .filteredGroupedPendingDocuments[lastUser]!;
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // ListTile(
-                            //   isThreeLine: false,
-                            //   title: Text(
-                            //     "Assigned by $lastUser",
-                            //     style: const TextStyle(
-                            //         fontWeight: FontWeight.bold),
-                            //   ),
-                            //   leading: CircleAvatar(
-                            //     radius: 15,
-                            //     backgroundColor: Colors.orangeAccent,
-                            //     child: Text(
-                            //       "${documents.length}",
-                            //       style:
-                            //           Get.theme.textTheme.bodySmall?.copyWith(
-                            //         color: Colors.white,
-                            //         fontSize: 12,
-                            //         fontWeight: FontWeight.bold,
-                            //       ),
-                            //       textAlign: TextAlign.center,
-                            //     ),
-                            //   ),
-                            // ),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: const ClampingScrollPhysics(),
-                              itemCount: documents.length,
-                              itemBuilder: (context, docIndex) {
-                                final item = documents[docIndex];
-                                List<Color> rowColors = [
-                                  const Color(0xffe5f7f1),
-                                  Colors.white
-                                ];
-                                Color rowColor =
-                                    rowColors[docIndex % rowColors.length];
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: CustomCard(
-                                    onPressed: () {
-                                      print("index...1.............$index");
-                                      print("index...2.............$docIndex");
-                                      Get.toNamed(
-                                        AppRoutes.documentApprovalScreen,
-                                        arguments: {
-                                          'currentDocumentIndex': item.docnum,
-                                          'groupedPendingDocuments': controller
-                                              .filteredGroupedPendingDocuments,
-                                          'AppName': controller.appName,
-                                          'AppID': controller.appID,
-                                        },
-                                      );
-                                    },
-                                    color: rowColor,
-                                    child: ListTile(
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 10, horizontal: 10),
-                                      leading: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        child: Image.asset(
-                                          "assets/images/cfl_logo.png",
-                                          width: 70,
-                                          height: 70,
-                                        ),
-                                      ),
-                                      title: Text(
-                                        item.docnum.toString(),
-                                        style:
-                                            Get.textTheme.titleSmall?.copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.black87,
-                                        ),
-                                      ),
-                                      subtitle: RichText(
-                                        text: TextSpan(
-                                          text: controller.dateFormat
-                                              .format(item.createdDate),
-                                          style: const TextStyle(
-                                            color: Colors.black54,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14,
-                                          ),
-                                          children: [
-                                            TextSpan(
-                                              text: '\n${item.lastuser}',
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      trailing: const Icon(
-                                        Icons.arrow_forward_ios_outlined,
-                                        size: 16,
-                                        color: Colors.black54,
-                                      ),
-                                      isThreeLine: false,
-                                    ),
-                                  ),
+                child: CircularProgressIndicator(),
+              )
+                  : controller.filteredGroupedPendingDocuments.isNotEmpty
+                  ? ListView.builder(
+                itemCount:
+                controller.filteredGroupedPendingDocuments.length,
+                itemBuilder: (context, index) {
+                  final lastUser = controller
+                      .filteredGroupedPendingDocuments.keys
+                      .toList()[index];
+                  final documents = controller
+                      .filteredGroupedPendingDocuments[lastUser]!;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // ListTile(
+                      //   isThreeLine: false,
+                      //   title: Text(
+                      //     "Assigned by $lastUser",
+                      //     style: const TextStyle(
+                      //         fontWeight: FontWeight.bold),
+                      //   ),
+                      //   leading: CircleAvatar(
+                      //     radius: 15,
+                      //     backgroundColor: Colors.orangeAccent,
+                      //     child: Text(
+                      //       "${documents.length}",
+                      //       style:
+                      //           Get.theme.textTheme.bodySmall?.copyWith(
+                      //         color: Colors.white,
+                      //         fontSize: 12,
+                      //         fontWeight: FontWeight.bold,
+                      //       ),
+                      //       textAlign: TextAlign.center,
+                      //     ),
+                      //   ),
+                      // ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const ClampingScrollPhysics(),
+                        itemCount: documents.length,
+                        itemBuilder: (context, docIndex) {
+                          final item = documents[docIndex];
+                          List<Color> rowColors = [
+                            const Color(0xffe5f7f1),
+                            Colors.white
+                          ];
+                          Color rowColor =
+                          rowColors[docIndex % rowColors.length];
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CustomCard(
+                              onPressed: () {
+                                print("index...1.............$index");
+                                print("index...2.............$docIndex");
+                                Get.toNamed(
+                                  AppRoutes.documentApprovalScreen,
+                                  arguments: {
+                                    'currentDocumentIndex': item.docnum,
+                                    'groupedPendingDocuments': controller
+                                        .filteredGroupedPendingDocuments,
+                                    'AppName': controller.appName,
+                                    'AppID': controller.appID,
+                                  },
                                 );
                               },
+                              color: rowColor,
+                              child: ListTile(
+                                contentPadding:
+                                const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 10),
+                                leading: ClipRRect(
+                                  borderRadius:
+                                  BorderRadius.circular(10.0),
+                                  child: Image.asset(
+                                    "assets/images/cfl_logo.png",
+                                    width: 70,
+                                    height: 70,
+                                  ),
+                                ),
+                                title: Text(
+                                  item.docnum.toString(),
+                                  style:
+                                  Get.textTheme.titleSmall?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                subtitle: RichText(
+                                  text: TextSpan(
+                                    text: controller.dateFormat
+                                        .format(item.createdDate),
+                                    style: const TextStyle(
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: '\n${item.lastuser}',
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                trailing: const Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                  size: 16,
+                                  color: Colors.black54,
+                                ),
+                                isThreeLine: false,
+                              ),
                             ),
-                          ],
-                        );
-                      },
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                },
+              )
+                  : const Center(
+                  child: Text(
+                    "No Documents",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
                     ),
+                  ),
+              ),
             ),
           ),
         ],

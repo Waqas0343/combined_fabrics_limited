@@ -137,7 +137,7 @@ class HomePage extends StatelessWidget {
                           'Date: ',
                           style: Get.textTheme.bodySmall,
                         ),
-                        Text('29/06/2024',
+                        Text('02/07/2024',
                           style: Get.textTheme.bodySmall,
                         ),
                       ],

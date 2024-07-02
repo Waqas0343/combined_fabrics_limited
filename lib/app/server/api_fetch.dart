@@ -85,6 +85,7 @@ import '../screens/rowing_inspection/rowing_quality_in_line_reports/rowing_quali
 import '../screens/rowing_inspection/rowing_quality_in_line_reports/rowing_quality_check_stitching_production/rowing_quality_check_stitching_producntion_models/rowing_quality_work_order_summary_report_model.dart';
 import '../screens/splash/mobile_app_version_model.dart';
 import '../screens/verify_documents/verify_models/document_history.dart';
+import '../screens/verify_documents/verify_models/documents_track_list.dart';
 import '../screens/verify_documents/verify_models/next_levels_users.dart';
 import '../screens/verify_documents/verify_models/pending_documents_model.dart';
 import '../screens/verify_documents/verify_models/verify_doc_dashboard_model.dart';
@@ -4604,7 +4605,6 @@ class ApiFetch extends getx.GetxService {
     return pdfUrl;
   }
 
-
   static Future<int?> getCountAllDocs(date) async {
     Response response;
     int? cnt;
@@ -4674,6 +4674,89 @@ class ApiFetch extends getx.GetxService {
             keysResponse.message,
             snackPosition: SnackPosition.BOTTOM,
           );
+        }
+
+        modelList = keysResponse.lists;
+      } catch (e, s) {
+        Debug.log(e);
+        Debug.log(s);
+      }
+    }
+    return modelList;
+  }
+
+  static Future<List<DocumentsTrackListModel>?> getDocsTrackList(date) async {
+    Response response;
+    List<DocumentsTrackListModel>? modelList;
+    try {
+      Debug.log(ServerConfig.getDocsTrackList + date);
+      String url = ServerConfig.getDocsTrackList + date;
+      String token = Get.find<Preferences>().getString(Keys.token) ?? "";
+
+      final headers = {
+        "Authorization": "Bearer $token",
+      };
+
+      response = await dio.get(
+        url,
+        options: Options(
+          headers: headers,
+        ),
+      );
+    } catch (e, s) {
+      Debug.log(e);
+      Debug.log(s);
+      return modelList;
+    }
+
+    if (response.statusCode == 200) {
+      Debug.log(response.data.toString());
+      try {
+        final keysResponse = DocumentsTrackList.fromJson(response.data);
+        if (keysResponse.lists.isNotEmpty) {
+
+        }
+
+        modelList = keysResponse.lists;
+      } catch (e, s) {
+        Debug.log(e);
+        Debug.log(s);
+      }
+    }
+    return modelList;
+  }
+
+  static Future<List<DocumentsTrackListModel>?> getDocsTrackSearchList(
+      date) async {
+    Response response;
+    List<DocumentsTrackListModel>? modelList;
+    try {
+      Debug.log(ServerConfig.getDocsTrackSearchList + date);
+      String url = ServerConfig.getDocsTrackSearchList + date;
+      String token = Get.find<Preferences>().getString(Keys.token) ?? "";
+
+      final headers = {
+        "Authorization": "Bearer $token",
+      };
+
+      response = await dio.get(
+        url,
+        options: Options(
+          headers: headers,
+        ),
+      );
+    } catch (e, s) {
+      Debug.log(e);
+      Debug.log(s);
+      return modelList;
+    }
+
+    if (response.statusCode == 200) {
+      Debug.log(response.data.toString());
+      try {
+        final keysResponse = DocumentsTrackList.fromJson(response.data);
+        if (keysResponse.lists.isNotEmpty) {
+
         }
 
         modelList = keysResponse.lists;
