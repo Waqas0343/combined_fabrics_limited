@@ -575,7 +575,8 @@ class EndLineTopFiveDefectWithoutOperation extends StatelessWidget {
           ),
           Obx(() {
             if (controller.operatorProductionList.isNotEmpty &&
-                !controller.isLoading.value) {
+                !controller.isLoading.value)
+            {
               return Scrollbar(
                 controller: scrollController,
                 thumbVisibility: true,

@@ -7,7 +7,6 @@ import '../../screens/fabric_inspection/widget/table_shift_dialog_form.dart';
 import '../../screens/home/home_controller.dart';
 import '../../screens/home/model/get_menu_model.dart';
 import '../../screens/verify_documents/widgets/tools_home_widget.dart';
-import '../../screens/verify_documents/widgets/tools_widget.dart';
 import '../../services/preferences.dart';
 import '../home_tools/tools_widget.dart';
 

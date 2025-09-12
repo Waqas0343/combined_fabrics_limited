@@ -68,7 +68,8 @@ dependencies:
   flutter_pdfview: 1.2.9
   printing: ^5.11.1
   excel: ^4.0.2
-  url_launcher: ^6.2.6
+#  url_launcher: ^6.2.6
+  url_launcher: ^6.3.0
   flutter_local_notifications: ^17.1.2
   flutter_background_service: ^5.0.5
   permission_handler: ^11.3.1

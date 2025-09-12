@@ -1,9 +1,7 @@
 import 'package:combined_fabrics_limited/app/debug/debug_pointer.dart';
-import 'package:combined_fabrics_limited/app/routes/app_routes.dart';
 import 'package:combined_fabrics_limited/app/screens/verify_documents/widgets/tools_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../app_widgets/home_tools/tools_widget.dart';
 import '../verify_controllers/p_o_approve_screen_controller.dart';
 
 class DocumentsAppCard extends StatelessWidget {

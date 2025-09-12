@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
 import '../../../../app_assets/styles/my_images.dart';
 import '../../../../app_assets/styles/strings/app_constants.dart';

@@ -1,11 +1,9 @@
-import 'package:combined_fabrics_limited/app/debug/debug_pointer.dart';
 import 'package:combined_fabrics_limited/app/screens/verify_documents/verify_controllers/document_approval_controller.dart';
 import 'package:combined_fabrics_limited/app/screens/verify_documents/verify_models/next_levels_users.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../routes/app_routes.dart';
-import 'full_screen_pdf_view.dart'; // Import the new screen
 
 class DocumentApprovalScreen extends StatelessWidget {
   const DocumentApprovalScreen({Key? key}) : super(key: key);

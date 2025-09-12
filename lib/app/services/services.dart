@@ -1,13 +1,6 @@
 import 'dart:async';
 import 'package:combined_fabrics_limited/app/services/preferences.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:get/get.dart';
-import '../debug/debug_pointer.dart';
-import '../screens/verify_documents/verify_models/verify_doc_dashboard_model.dart';
-import '../server/api_fetch.dart';
-import 'notification_manager.dart';
-import 'package:flutter_background_service_android/flutter_background_service_android.dart';
-import '../../app_assets/styles/strings/app_constants.dart';
 
 class Services {
   static final Services _instance = Services._();

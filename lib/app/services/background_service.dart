@@ -1,12 +1,3 @@
-import 'dart:async';
-import 'package:combined_fabrics_limited/app/debug/debug_pointer.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
-import 'package:flutter_background_service_android/flutter_background_service_android.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../app_assets/styles/strings/app_constants.dart';
-import '../screens/verify_documents/verify_models/verify_doc_dashboard_model.dart';
-import '../server/api_fetch.dart';
-import 'notification_manager.dart';
 
 class BackgroundService {
   // static void onStart(ServiceInstance service) async {

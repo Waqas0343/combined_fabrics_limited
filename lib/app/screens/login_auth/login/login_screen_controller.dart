@@ -1,8 +1,4 @@
-import 'dart:io';
-
-import 'package:combined_fabrics_limited/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import '../../../../app_assets/styles/strings/app_constants.dart';

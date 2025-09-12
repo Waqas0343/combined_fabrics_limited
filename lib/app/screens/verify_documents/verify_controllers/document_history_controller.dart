@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../../../../app_assets/styles/strings/app_constants.dart';
 import '../../../server/api_fetch.dart';
 import '../verify_models/document_history.dart';
 

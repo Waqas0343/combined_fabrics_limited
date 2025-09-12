@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
-import 'package:printing/printing.dart';
 import '../controllers/in_line_live_status_flag_controller.dart';
 import '../models/rowing_quality_round_detail_model.dart';
 
